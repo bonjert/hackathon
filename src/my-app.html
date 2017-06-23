@@ -147,6 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       constructor() {
         super();
+        this.addEventListener('change-path', this._changePage.bind(this));
 
         // Get root pattern for app-route, for more info about `rootPath` see:
         // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
@@ -187,6 +188,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // console.log(this.$.drawer.open());
         this.$.drawer.open();
       }
+
+      _changePage(e){
+          window.history.pushState({}, null, e.detail.path);
+          window.dispatchEvent(new CustomEvent('location-changed'));
+      }
+
+      
     }
 
     window.customElements.define(MyApp.is, MyApp);

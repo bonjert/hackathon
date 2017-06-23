@@ -1,0 +1,19 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<script>
+    /**
+	 * Common behavior
+	 * 
+	 * @polymerBehavior
+	 */
+    CommonBehavior = {
+        changePath: function (detail) {
+            this.dispatchEvent(
+                new CustomEvent('change-path', {
+                    bubbles: true, composed: true,
+                    detail: detail
+                })
+            );
+        }
+    };
+
+</script>
