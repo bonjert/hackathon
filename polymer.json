@@ -18,5 +18,14 @@
   ],
   "lint": {
     "rules": ["polymer-2"]
-  }
+  },
+  "builds":[{
+    "bundle": false,
+    "js": {"minify": false},
+    "css": {"minify": false},
+    "html": {"minify": false},
+    "addServiceWorker": true,
+    "addPushManifest": true,
+    "insertPrefetchLinks": false
+  }]
 }
