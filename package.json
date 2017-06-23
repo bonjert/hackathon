@@ -1,0 +1,31 @@
+{
+  "name": "bonjert-pwa",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.0",
+    "eslint-plugin-html": "^2.0.0"
+  },
+  "scripts": {
+    "lint": "npm run lint:javascript",
+    "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
+    "test": "polymer test",
+    "test:integration": "polymer build # test that psk builds without error with the CLI",
+    "dev":"polymer serve --protocol h2 --hostname 0.0.0.0 --port 8080"
+  },
+  "description": "PWA Online hackathon",
+  "version": "1.0.0",
+  "main": "service-worker.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bonjert/hackathon.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/bonjert/hackathon/issues"
+  },
+  "homepage": "https://github.com/bonjert/hackathon#readme"
+}
