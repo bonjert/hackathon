@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!--
+`<page>` is Description
+
+@element page
+-->
+<dom-module id="page-panel">
+
+    <template>
+        <style>
+            .material{
+                background-color: white;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+                opacity: 1;
+            }
+            .title{
+                font-size: 22px;
+                font-weight: bold;
+            }
+        </style>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="material" style="padding:1rem">
+                    <div class="row">
+                        <div class="col-xs-11">
+                            <div class="title">
+                                [[label]]
+                            </div>
+                        </div>
+                    </div>
+                    <slot></slot>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        class pagePanel extends Polymer.Element {
+
+            static get is() { return 'page-panel'; }
+
+            static get properties() {
+                return {
+                    label:{
+                        type:String,
+                        value:'label'
+                    }
+                };
+            }
+
+            constructor() {
+                super();
+            }
+
+            ready() {
+                super.ready();
+
+                Polymer.RenderStatus.afterNextRender(this, function () {
+
+                });
+            }
+
+        }
+
+        window.customElements.define(pagePanel.is, pagePanel);
+    </script>
+</dom-module>
