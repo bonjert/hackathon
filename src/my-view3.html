@@ -38,7 +38,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     class MyView3 extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
       static get is() { return 'my-view3'; }
       _testLink(){
-        console.log('dddd')
         this.changePath({path:'/view2'})
         
       }
