@@ -10,11 +10,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
-
+<link rel="import" href="./../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../bower_components/paper-input/paper-input.html">
+<link rel="import" href="./../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="./../bower_components/iron-icons/test/iron-icons.html">
 <link rel="import" href="./../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="./components/page-panel.html">
-
+<link rel="import" href="./../bower_components/paper-button/paper-button.html">
 <dom-module id="my-view2">
   <template>
     <style include="shared-styles">
@@ -23,14 +25,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px;
       }
+      .section{
+        padding:10px;
+      }
+      paper-dialog{
+        width:70%;
+      }
     </style>
-    
-    <page-panel label="xxx">
-      <div>
-        Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.
+    <template is="dom-repeat" items="[[myItem]]">
+      <div class="section">
+         <page-panel label="[[item.label]]">
+          <div>
+           [[item.note]]
+          </div>
+      </page-panel>
       </div>
-    </page-panel>
-    <paper-fab icon="add"></paper-fab>
+     
+    </template>
+    <paper-fab id="fab" icon="add" on-tap="openDialog"></paper-fab>
+    <paper-dialog id="alignedDialog" horizontal-align="right">
+      <h2>Aligned dialog</h2>
+      <p>
+        <paper-input label="label" value="{{data.label}}"></paper-input>
+        <paper-textarea label="note" rows="2" value="{{data.note}}"></paper-textarea>
+      </p>
+      <div class="buttons">
+        <paper-button on-tap="addItem" dialog-confirm autofocus>ADD</paper-button>
+      </div>
+    </paper-dialog>
     <!--<div class="card">
       <div class="circle">2</div>
       <h1>View Two</h1>
@@ -42,6 +64,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     class MyView2 extends Polymer.Element {
       static get is() { return 'my-view2'; }
+      static get properties() {
+              return {
+                  myItem:{
+                      type:Array,
+                      value:[
+                      ]
+                  },
+                  data:{
+                    type:Object,
+                    value:{
+                      label:'',
+                      note:''
+                    }
+                  }
+              };
+      }
+      openDialog(e){
+        console.log(e.currentTarget)
+        this.$.alignedDialog.positionTarget =  e.currentTarget;
+        this.$.alignedDialog.open()
+      
+        // this.push('myItem','3')
+      }
+      addItem(){
+        console.log(this.data);
+        this.push('myItem',this.data)
+        // this.push('myItem','3')
+      }
     }
 
     window.customElements.define(MyView2.is, MyView2);
