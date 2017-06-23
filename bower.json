@@ -23,6 +23,8 @@
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.0",
     "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#^2.0.0",
-    "iron-icons": "PolymerElements/iron-icons#^2.0.1"
+    "iron-icons": "PolymerElements/iron-icons#^2.0.1",
+    "paper-progress": "PolymerElements/paper-progress#^2.0.1",
+    "paper-item": "PolymerElements/paper-item#^2.0.0"
   }
 }
