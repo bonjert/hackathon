@@ -5,3 +5,4 @@ node_modules/
 yarn.lock
 npm-debug*
 /temp
+firebase-debug.log
