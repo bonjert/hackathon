@@ -27,5 +27,8 @@
     "paper-progress": "PolymerElements/paper-progress#^2.0.1",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0"
   }
 }
