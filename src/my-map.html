@@ -1,0 +1,64 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="my-map">
+    <template>
+        <link rel="import" type="css" href="../bower_components/flexboxgrid/dist/flexboxgrid.min.css">
+        <style include="shared-styles">
+             :host {
+                display: block;
+            }
+
+            #map {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+        <!--<paper-button raised on-tap="setMap"> ทดสอบ</paper-button>-->
+        <!--<div class="card">
+      <div class="circle">1</div>
+      <h1>View One</h1>
+      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
+      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
+    </div>-->
+        <div id="map"></div>
+    </template>
+
+    <script>
+        class Mymap extends Polymer.Element {
+            static get is() { return 'my-map'; }
+            connectedCallback() {
+                super.connectedCallback();
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(this.setMap.bind(this));
+                } else {
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            setMap(position) {
+                if (position !== undefined) {
+                    var uluru = { lat: position.coords.latitude, lng:position.coords.longitude };
+                    // var uluru = { lat: 13.8211924, lng: 100.5127491 };
+                    var map = new google.maps.Map(this.$.map, {
+                        zoom: 14,
+                        center: uluru
+                    });
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(13.847616, 100.604736),
+                        map: map
+                    });
+
+                    //  var marker = new google.maps.Marker({
+                    //     position: new google.maps.LatLng(13.847077, 100.606973),
+                    //     map: map
+                    // });
+                }
+
+            }
+        }
+
+        window.customElements.define(Mymap.is, Mymap);
+    </script>
+</dom-module>

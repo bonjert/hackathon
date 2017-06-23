@@ -11,27 +11,71 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
 
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="./my-map.html">
+
 <dom-module id="my-view1">
   <template>
     <style include="shared-styles">
-      :host {
+       :host {
         display: block;
 
         padding: 10px;
       }
-    </style>
 
-    <div class="card">
+      my-map {
+        height: 400px;
+        width: 100%;
+        border: solid red 2px;
+      }
+
+      .xx {
+        background-color: blue;
+      }
+
+      .yy {
+        background-color: green;
+      }
+    </style>
+    <div class="row">
+      <!--<div class="col-xs-12
+                col-sm-8
+                col-md-6
+                col-lg-4 xx">-->
+      <div class="box">Responsive</div>
+      <!--</div>-->
+      <div class="col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2 yy">
+        <div class="box">
+          <my-map></my-map>
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
+    </div>-->
+
   </template>
 
   <script>
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
+      connectedCallback() {
+        super.connectedCallback();
+
+        console.log(111);
+      }
+      // disconnectedCallback() {
+      //   super.disconnectedCallback();
+      //   console.log(222222222);
+      // }
     }
 
     window.customElements.define(MyView1.is, MyView1);
