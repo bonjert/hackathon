@@ -2,10 +2,10 @@
 <link rel="import" href="shared-styles.html">
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-
+<link rel="import" type="css" href="../bower_components/flexboxgrid/dist/flexboxgrid.min.css">
 <dom-module id="my-map">
     <template>
-        <link rel="import" type="css" href="../bower_components/flexboxgrid/dist/flexboxgrid.min.css">
+
         <style include="shared-styles">
              :host {
                 display: block;
@@ -23,40 +23,127 @@
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div>-->
+        <!--{{dataMap}}///-->
         <div id="map"></div>
     </template>
 
     <script>
         class Mymap extends Polymer.Element {
             static get is() { return 'my-map'; }
-            connectedCallback() {
-                super.connectedCallback();
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(this.setMap.bind(this));
-                } else {
-                    x.innerHTML = "Geolocation is not supported by this browser.";
+            static get properties() {
+                return {
+                    dataMap: {
+                        type: Array,
+                        value: [],
+                        notify: true
+                    },
                 }
             }
+            static get observers() {
+                return [
+                    'setMap(dataMap)'
+                ]
+            }
+            // connectedCallback() {
+            //     super.connectedCallback();
+            //     if (navigator.geolocation) {
+            //         navigator.geolocation.getCurrentPosition(this.setMap.bind(this));
+            //     } else {
+            //         x.innerHTML = "Geolocation is not supported by this browser.";
+            //     }
+            // }
             setMap(position) {
+                var map;
+                var markers = [];
                 if (position !== undefined) {
-                    var uluru = { lat: position.coords.latitude, lng:position.coords.longitude };
-                    // var uluru = { lat: 13.8211924, lng: 100.5127491 };
-                    var map = new google.maps.Map(this.$.map, {
+                    // var uluru = { lat: position.coords.latitude, lng:position.coords.longitude };
+                    var uluru = { lat: 13.847860, lng: 100.604274 };
+
+                    var maps = new google.maps.Map(this.$.map, {
                         zoom: 14,
                         center: uluru
                     });
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(13.847616, 100.604736),
-                        map: map
-                    });
+                    var marker, info;
+                    for (var index = 0; index < position.length; index++) {
+                        // console.log(position[index].location);
 
-                    //  var marker = new google.maps.Marker({
-                    //     position: new google.maps.LatLng(13.847077, 100.606973),
-                    //     map: map
+                        marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(position[index].lat, position[index].lng),
+                            map: maps,
+                            title: position[index].location
+                        });
+                        // marker.setMap(null)
+                        console.log(222222);
+                        info = new google.maps.InfoWindow();
+
+                        google.maps.event.addListener(marker, 'click', ((marker, index)=> {
+                            return function () {
+                                // console.log(position[index]);
+                                info.setContent(position[index].location);
+                                info.open(maps, marker);
+                            }
+                        })(marker, index));
+                    }
+                    ///กำลังแก้ไขให้ คืนค่า ละ ลอง
+     
+                //      // Adds a marker to the map and push to the array.
+                    // var addMarker = (location) => {
+                    //     var marker = new google.maps.Marker({
+                    //         position: location,
+                    //         map: map
+                    //     });
+                    //     // console.log(marker);
+                    //     markers.push(marker);
+                    //     console.log(markers);
+                    //     console.log(this.dataMap);
+                    //     // this.set('dataMap',markers)
+                    // }
+                    // var haightAshbury = { lat: 37.769, lng: -122.446 };
+
+                    // map = new google.maps.Map(this.$.map, {
+                    //     zoom: 12,
+                    //     center: haightAshbury,
+                    //     mapTypeId: 'terrain'
                     // });
-                }
 
+                    // // This event listener will call addMarker() when the map is clicked.
+                    // map.addListener('click', (event) => {
+                    //     addMarker(event.latLng);
+                    // });
+
+                    // // Adds a marker at the center of the map.
+                    // addMarker(haightAshbury);
+                
+
+               
+
+
+                // // Sets the map on all markers in the array.
+                // function setMapOnAll(map) {
+                //     for (var i = 0; i < markers.length; i++) {
+                //         markers[i].setMap(map);
+                //     }
+                // }
+
+                // // Removes the markers from the map, but keeps them in the array.
+                // function clearMarkers() {
+                //     setMapOnAll(null);
+                // }
+
+                // // Shows any markers currently in the array.
+                // function showMarkers() {
+                //     setMapOnAll(map);
+                // }
+
+                // // Deletes all markers in the array by removing references to them.
+                // function deleteMarkers() {
+                //     clearMarkers();
+                //     markers = [];
+                }
             }
+            // addMakers(maker){
+            //     console.log(maker);
+            // }
         }
 
         window.customElements.define(Mymap.is, Mymap);

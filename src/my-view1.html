@@ -13,6 +13,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+
 <link rel="import" href="./my-map.html">
 
 <dom-module id="my-view1">
@@ -31,18 +42,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .xx {
-        background-color: blue;
+        /*background-color: blue;*/
       }
 
       .yy {
-        background-color: green;
+        /*background-color: green;*/
       }
     </style>
+    <paper-input always-float-label label="Latitude" placeholder="Latitude" allowed-pattern="[0-9.]" value="{{data.latitude}}"></paper-input>
+    <paper-input always-float-label label="Longitude" placeholder="Longitude" allowed-pattern="[0-9.]" value="{{data.longitude}}"></paper-input>
+    <paper-input always-float-label label="Name Localtion" placeholder="Name Localtion" allowed-pattern="[A-Za-zก-ฮ0-9._%]" value="{{data.name_localtion}}"></paper-input>
+    <paper-button raised on-tap="getData">Mark Localtion</paper-button>
+    <paper-button raised on-tap="hideData">Hide Localtion</paper-button>
+    <paper-fab icon="maps:add-location" on-tap="getLocal"></paper-fab>
     <div class="row">
       <!--<div class="col-xs-12
                 col-sm-8
                 col-md-6
                 col-lg-4 xx">-->
+
+
       <div class="box">Responsive</div>
       <!--</div>-->
       <div class="col-xs-6
@@ -50,11 +69,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 col-md-3
                 col-lg-2 yy">
         <div class="box">
-          <my-map></my-map>
+          <my-map data-map$="{{datamap}}"></my-map>
         </div>
       </div>
     </div>
-
+    <!--{{datamap}}-->
     <!--<div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
@@ -67,10 +86,63 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
+      static get properties() {
+        return {
+          datamap: {
+            type: Array,
+            value: [
+              { "location": "วัดลาดปลาเค้า", "lat": "13.846876", "lng": "100.604481" },
+              { "location": "หมู่บ้านอารียา", "lat": "13.847766", "lng": "100.605768" },
+              { "location": "สปีดเวย์", "lat": "13.845235", "lng": "100.602711" },
+              { "location": "สเต็ก ลุงหนวด", "lat": "13.862970", "lng": "100.613834" }
+            ],
+          },
+          data: {
+            type: Object,
+            value: {
+              latitude: '',
+              longitude: '',
+              name_localtion: '',
+            }
+          }
+        }
+      }
       connectedCallback() {
         super.connectedCallback();
+        if (navigator.geolocation) {
+          // navigator.geolocation.getCurrentPosition(this.setMap.bind(this));
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+      }
+      getData() {
+        console.log(this.data);
+      }
+      hideData(){
 
-        console.log(111);
+      }
+      getLocal() {
+        if (navigator.geolocation) {
+          // let data = this.data
+          console.log(this.data);
+          navigator.geolocation.getCurrentPosition((position) => {
+            //  console.log(position);
+            var uluru = { lat: position.coords.latitude, lng: position.coords.longitude };
+            console.log(uluru);
+            this.set('data.latitude', uluru.lat)
+            this.set('data.longitude', uluru.lng)
+            if (this.data.name_localtion === '')
+              this.data.name_localtion = ''
+            //             latitude
+            // longitude
+            // name_localtion
+            this.push('datamap', this.data)
+            console.log(this.datamap);
+          });
+
+        } else {
+          x.innerHTML = "Geolocation is not supported by this browser.";
+        }
       }
       // disconnectedCallback() {
       //   super.disconnectedCallback();
