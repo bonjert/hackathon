@@ -8,11 +8,11 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
-<link rel="import" href="common-behavior.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../layout/shared-styles.html">
+<link rel="import" href="../common-behavior.html">
 
-<dom-module id="my-view3">
+<dom-module id="page-view3">
   <template>
     <style include="shared-styles">
       :host {
@@ -35,14 +35,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class MyView3 extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
-      static get is() { return 'my-view3'; }
+    class PageView3 extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
+      static get is() { return 'page-view3'; }
       _testLink(){
         this.changePath({path:'/view2'})
         
       }
     }
 
-    window.customElements.define(MyView3.is, MyView3);
+    window.customElements.define(PageView3.is, PageView3);
   </script>
 </dom-module>

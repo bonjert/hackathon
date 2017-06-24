@@ -8,16 +8,16 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="shared-styles.html">
-<link rel="import" href="./../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="./../bower_components/paper-input/paper-input.html">
-<link rel="import" href="./../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="./../bower_components/iron-icons/test/iron-icons.html">
-<link rel="import" href="./../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="./components/page-panel.html">
-<link rel="import" href="./../bower_components/paper-button/paper-button.html">
-<dom-module id="my-view2">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../layout/shared-styles.html">
+<link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="./../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="./../../bower_components/iron-icons/test/iron-icons.html">
+<link rel="import" href="./../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="./../components/page-panel.html">
+<link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<dom-module id="page-view2">
   <template>
     <style include="shared-styles">
       :host {
@@ -64,8 +64,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    class MyView2 extends Polymer.Element {
-      static get is() { return 'my-view2'; }
+    class PageView2 extends Polymer.Element {
+      static get is() { return 'page-view2'; }
       static get properties() {
               return {
                   myItem:{
@@ -96,6 +96,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
 
-    window.customElements.define(MyView2.is, MyView2);
+    window.customElements.define(PageView2.is, PageView2);
   </script>
 </dom-module>

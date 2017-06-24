@@ -1,0 +1,117 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="./../../bower_components/paper-progress/paper-progress.html">
+
+<link rel="import" href="../my-icons.html">
+
+
+<dom-module id="my-layout">
+    <template>
+        <style>
+            app-toolbar {
+                background-color: #4285f4;
+                color: #fff;
+            }
+
+            paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            paper-icon-button+[main-title] {
+                margin-left: 24px;
+            }
+
+            paper-progress {
+                display: block;
+                width: 100%;
+                --paper-progress-active-color: rgba(255, 255, 255, 0.5);
+                --paper-progress-container-color: transparent;
+            }
+
+            app-header {
+                @apply --layout-fixed-top;
+                color: #fff;
+                --app-header-background-rear-layer: {
+                    background-color: #ef6c00;
+                }
+                ;
+            }
+
+            app-drawer {
+                --app-drawer-scrim-background: rgba(0, 0, 0, 0.8);
+                --app-drawer-width: 300px;
+                --app-drawer-content-container: {
+                    background-color: #f1f1f1;
+                }
+            }
+
+            .container {
+                padding: 64px;
+            }
+
+            sample-content {
+                padding-top: 64px;
+            }
+
+            #drawerLayout {
+                z-index: 2;
+            }
+        </style>
+
+
+        <app-header-layout>
+            <app-header style="z-index:1;" fixed>
+                <app-toolbar>
+                    <paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+                    <div main-title>My app</div>
+                    <paper-progress value="10" indeterminate bottom-item></paper-progress>
+                </app-toolbar>
+            </app-header>
+            <app-drawer-layout id="drawerLayout">
+                <app-drawer id="drawer" position="right">
+                    <app-toolbar></app-toolbar>
+                    <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                        <a name="view1" href="view1">View One</a>
+                        <a name="view2" href="view2">View Two</a>
+                        <a name="view3" href="view3">View Three</a>
+                    </iron-selector>
+                </app-drawer>
+            </app-drawer-layout>
+
+            <!--<sample-content size="10"></sample-content>-->
+            <div class="container">
+                <slot></slot>
+            </div>
+        </app-header-layout>
+
+    </template>
+
+    <script>
+        class MyLayout extends Polymer.Element {
+
+            static get is() { return 'my-layout'; }
+            static get properties() {
+                return {
+                    page: String
+                }
+            }
+
+            toggleDrawer() {
+                // console.log(this.$.drawer.open());
+                this.$.drawer.open();
+            }
+
+        }
+
+        window.customElements.define(MyLayout.is, MyLayout);
+    </script>
+</dom-module>

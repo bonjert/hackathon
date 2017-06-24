@@ -1,123 +1,40 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="./../bower_components/iron-icons/iron-icons.html">
 
-<link rel="import" href="./../bower_components/paper-item/paper-item.html">
+<link rel="import" href="layout/my-layout.html">
+<link rel="lazy-import" href="pages/page-view1.html">
+<link rel="lazy-import" href="pages/page-view2.html">
+<link rel="lazy-import" href="pages/page-view3.html">
+<link rel="lazy-import" href="pages/page-view404.html">
 
-<link rel="import" href="./../bower_components/paper-progress/paper-progress.html">
-
-<link rel="import" href="my-icons.html">
-
-<link rel="lazy-import" href="my-view1.html">
-<link rel="lazy-import" href="my-view2.html">
-<link rel="lazy-import" href="my-view3.html">
-<link rel="lazy-import" href="my-view404.html">
+<script src="./../bower_components/firebase/firebase.js"></script>
+<script>
+  var config = {
+    apiKey: "AIzaSyD_1N-jVH2y53ego7kzc_PlmGW0_LqavEc",
+    authDomain: "hackathon-46ef4.firebaseapp.com",
+    databaseURL: "https://hackathon-46ef4.firebaseio.com",
+    projectId: "hackathon-46ef4",
+    storageBucket: "hackathon-46ef4.appspot.com",
+    messagingSenderId: "177551575442"
+  };
+  firebase.initializeApp(config);
+</script>
 
 <dom-module id="my-app">
   <template>
-    <style>
-      app-toolbar {
-        background-color: #4285f4;
-        color: #fff;
-      }
-
-      paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
-      paper-icon-button+[main-title] {
-        margin-left: 24px;
-      }
-
-      paper-progress {
-        display: block;
-        width: 100%;
-        --paper-progress-active-color: rgba(255, 255, 255, 0.5);
-        --paper-progress-container-color: transparent;
-      }
-
-      app-header {
-        @apply --layout-fixed-top;
-        color: #fff;
-        --app-header-background-rear-layer: {
-          background-color: #ef6c00;
-        }
-        ;
-      }
-
-      app-drawer {
-        --app-drawer-scrim-background: rgba(0, 0, 0, 0.8);
-        --app-drawer-width: 300px;
-        --app-drawer-content-container: {
-          background-color: #f1f1f1;
-        }
-      }
-
-      .container {
-        padding: 64px;
-      }
-
-      sample-content {
-        padding-top: 64px;
-      }
-
-      #drawerLayout {
-        z-index: 2;
-      }
-    </style>
-
     <app-location route="{{route}}"></app-location>
     <app-route route="{{route}}" pattern="[[rootPattern]]:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
-    <app-header-layout>
-      <app-header style="z-index:1;" fixed>
-        <app-toolbar>
-          <paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-          <div main-title>My app</div>
-          <paper-progress value="10" indeterminate bottom-item></paper-progress>
-        </app-toolbar>
-      </app-header>
-      <app-drawer-layout id="drawerLayout">
-        <app-drawer id="drawer" position="right">
-          <app-toolbar></app-toolbar>
-          <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="view1" href="view1">View One</a>
-            <a name="view2" href="view2">View Two</a>
-            <a name="view3" href="view3">View Three</a>
-          </iron-selector>
-        </app-drawer>
-      </app-drawer-layout>
-  
-      <!--<sample-content size="10"></sample-content>-->
-      <div class="container">
-        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-          <my-view1 name="view1"></my-view1>
-          <my-view2 name="view2"></my-view2>
-          <my-view3 name="view3"></my-view3>
-          <my-view404 name="view404"></my-view404>
-        </iron-pages>
-      </div>
-    </app-header-layout>
+    <my-layout id="myLayout" page="[[page]]">
+      <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+        <page-view1 name="view1"></page-view1>
+        <page-view2 name="view2"></page-view2>
+        <page-view3 name="view3"></page-view3>
+        <page-view404 name="view404"></page-view404>
+      </iron-pages>
+    </my-layout>
 
   </template>
 
@@ -166,14 +83,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.page = page || 'view1';
 
         // Close a non-persistent drawer when the page & route are changed.
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
+        var myLayout = this.$.myLayout
+        if (!myLayout.$.drawer.persistent) {
+          myLayout.$.drawer.close();
         }
       }
 
       _pageChanged(page) {
         // Load page import on demand. Show 404 page if fails
-        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        var resolvedPageUrl = this.resolveUrl('pages/page-' + page + '.html');
         Polymer.importHref(
           resolvedPageUrl,
           null,
@@ -184,10 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _showPage404() {
         this.page = 'view404';
       }
-      toggleDrawer() {
-        // console.log(this.$.drawer.open());
-        this.$.drawer.open();
-      }
+      
 
       _changePage(e){
           window.history.pushState({}, null, e.detail.path);
