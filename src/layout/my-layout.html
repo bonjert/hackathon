@@ -14,8 +14,12 @@
 <link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="./../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="./../common-behavior.html">
-
+<link rel="import" href="./../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="./../../bower_components/iron-icons/maps-icons.html">
+
+<link rel="import" href="./../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
+<link rel="import" href="./../../bower_components/paper-toast/paper-toast.html">
 
 <!--<link rel="import" href="../layout/shared-styles.html">-->
 <link rel="import" href="../my-icons.html">
@@ -103,31 +107,119 @@
                 font-size: 30px;
                 line-height: 64px;
             }
-            .buttons{
+
+            .buttons {
                 border-top: 1px solid #ddd;
                 background-color: #ddd;
             }
-            paper-button{
+
+            paper-button {
                 background-color: #4285f4;
                 color: white;
                 border: 1px solid #ddd;
-            }   
-            #alignedDialog{
+            }
+
+            #alignedDialog {
                 margin: 0;
+            }
+
+            paper-tabs {
+                --paper-tabs-selection-bar: {
+                    border: 2px solid yellow;
+                }
+            }
+
+            #toast {
+                width: auto;
+            }
+
+            body {
+                padding: 2em;
+            }
+            /* Shared */
+
+            .loginBtn {
+                box-sizing: border-box;
+                position: relative;
+                /* width: 13em;  - apply for fixed size */
+                margin: 0.2em;
+                padding: 0 15px 0 46px;
+                border: none;
+                text-align: left;
+                line-height: 34px;
+                white-space: nowrap;
+                border-radius: 0.2em;
+                font-size: 16px;
+                color: #FFF;
+            }
+
+            .loginBtn:before {
+                content: "";
+                box-sizing: border-box;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 34px;
+                height: 100%;
+            }
+
+            .loginBtn:focus {
+                outline: none;
+            }
+
+            .loginBtn:active {
+                box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+            }
+            /* Facebook */
+
+            .loginBtn--facebook {
+                background-color: #4C69BA;
+                background-image: linear-gradient(#4C69BA, #3B55A0);
+                /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+                text-shadow: 0 -1px 0 #354C8C;
+            }
+
+            .loginBtn--facebook:before {
+                border-right: #364e92 1px solid;
+                background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
+            }
+
+            .loginBtn--facebook:hover,
+            .loginBtn--facebook:focus {
+                background-color: #5B7BD5;
+                background-image: linear-gradient(#5B7BD5, #4864B1);
+            }
+            /* Google */
+
+            .loginBtn--google {
+                /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+                background: #DD4B39;
+            }
+
+            .loginBtn--google:before {
+                border-right: #BB3F30 1px solid;
+                background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+            }
+
+            .loginBtn--google:hover,
+            .loginBtn--google:focus {
+                background: #E74B37;
             }
         </style>
 
 
         <app-header-layout>
             <app-header style="z-index:1;" fixed condenses effects="waterfall">
+                <paper-progress class="red" indeterminate></paper-progress>
                 <app-toolbar>
-                    
-                    <!--<iron-icon icon="maps:near-me"></iron-icon>-->
+
+                    <paper-icon-button icon="icons:arrow-back"></paper-icon-button>
+
                     <div main-title>MY APPS</div>
                     <!--<a href="">Sign In</a>-->
                     <!--<button on-click="login">Sign In</button>-->
                     <template is="dom-if" if="[[checkUser(user)]]">
-                        <button on-click="login">Sign In</button>
+                        <button on-click="openDialogLogin">Sign In</button>
                     </template>
 
                     <template is="dom-if" if="[[!checkUser(user)]]">
@@ -138,14 +230,18 @@
                         <button on-click="logout">Sign Out</button>-->
                     </template>
 
-
                     <!--<paper-icon-button icon="search"></paper-icon-button>-->
                 </app-toolbar>
                 <paper-tabs selected="0" sticky>
-                    <paper-tab>TAB 1</paper-tab>
-                    <paper-tab>TAB 2</paper-tab>
-                    <paper-tab>TAB 3</paper-tab>
+                    <paper-tab>
+                        <iron-icon icon="icons:home"></iron-icon>
+                    </paper-tab>
+                    <paper-tab>
+                        <iron-icon icon="social:person"></iron-icon>
+                    </paper-tab>
+                    <!--<paper-tab>TAB 3</paper-tab>-->
                 </paper-tabs>
+
             </app-header>
             <paper-dialog id="alignedDialog" no-overlap horizontal-align="right" vertical-align="top">
                 <!--<p>
@@ -166,12 +262,17 @@
 
                 <h2>[[user.displayName]]</h2>
                 <p>
-                  [[user.email]]
+                    [[user.email]]
                 </p>
                 <div class="buttons">
                     <paper-button on-tap="logout">Sign Out</paper-button>
                 </div>
             </paper-dialog>
+            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                <a name="view1" href="view1">View One</a>
+                <a name="view2" href="view2">View Two</a>
+                <a name="view3" href="view3">View Three</a>
+            </iron-selector>
             <!--<app-drawer-layout id="drawerLayout">
                 <app-drawer id="drawer" position="right">
                     <app-toolbar></app-toolbar>
@@ -184,11 +285,33 @@
             </app-drawer-layout>-->
 
             <!--<sample-content size="10"></sample-content>-->
+
+            <paper-toast id="toast">
+                <iron-icon icon="icons:face"></iron-icon><span style="margin-left:10px">[[toastMessage]]</span>
+            </paper-toast>
+
             <div class="container">
                 <slot></slot>
             </div>
         </app-header-layout>
-
+        <!--<template is="dom-if" if="[[checkUser(user)]]">-->
+          <paper-dialog id="dialogLogin" style="z-index:3;" opened modal>
+                <h2>Please Login.</h2>
+                <p>
+                    <div style="text-align:center">
+                        <button class="loginBtn loginBtn--facebook"  on-click="login">
+                        Login with Facebook
+                        </button>
+                    </div>
+                    <div style="text-align:center">
+                         <button class="loginBtn loginBtn--google">
+                        Login with Google
+                        </button>
+                    </div>
+                   
+                </p>
+            </paper-dialog>
+        <!--</template>-->
     </template>
 
     <script>
@@ -202,15 +325,21 @@
                         type: Object,
                         value: {},
                         observer: '_userChanged'
+                    },
+                    toastMessage: {
+                        type: String,
+                        value: 'Welcome to my app.'
                     }
                 }
             }
 
             ready() {
                 super.ready()
+                this.$.toast.open()
 
             }
             checkUser(val) {
+                if(Object.keys(val).length != 0)this.$.dialogLogin.close();
                 return Object.keys(val).length == 0;
             }
 
@@ -228,6 +357,7 @@
 
             login() {
                 console.log(this.page.displayName)
+                // this.$.dialogLogin.close();
                 this.fire('action-login')
             }
             logout() {
@@ -238,6 +368,9 @@
                 console.log(this.user)
                 this.$.alignedDialog.positionTarget = e.currentTarget;
                 this.$.alignedDialog.open()
+            }
+            openDialogLogin(){
+                this.$.dialogLogin.open();
             }
 
 
