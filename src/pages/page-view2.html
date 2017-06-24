@@ -20,27 +20,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="page-view2">
   <template>
     <style include="shared-styles">
-      :host {
+       :host {
         display: block;
 
         padding: 10px;
       }
-      .section{
-        padding:10px;
+
+      .section {
+        padding: 10px;
       }
-      paper-dialog{
-        width:70%;
+
+      paper-dialog {
+        width: 70%;
       }
     </style>
     <template is="dom-repeat" items="[[myItem]]">
       <div class="section">
         <div class="card">
-          <div class="circle">2</div>
-          <h1>[[item.label]]</h1>
-          <p>[[item.note]]</p>
+          <div class="header">
+            <span class="circle ">2</span>
+            <span class="text-card">
+                <div class="text-title">
+                    [[item.label]]
+                </div>
+                <!--<div class="text-user">
+                    user
+                </div>-->
+                <div class="content">
+               [[item.note]]
+            </div>
+            </span>
+          </div>
+
+
         </div>
       </div>
-     
+
     </template>
     <paper-fab id="fab" icon="add" on-tap="openDialog"></paper-fab>
     <paper-dialog id="alignedDialog" horizontal-align="right">
@@ -55,38 +70,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button on-tap="addItem" dialog-confirm autofocus>ADD</paper-button>
       </div>
     </paper-dialog>
-    
+
   </template>
 
   <script>
     class PageView2 extends Polymer.Element {
       static get is() { return 'page-view2'; }
       static get properties() {
-              return {
-                  myItem:{
-                      type:Array,
-                      value:[
-                      ]
-                  },
-                  data:{
-                    type:Object,
-                    value:{
-                      label:'',
-                      note:''
-                    }
-                  }
-              };
+        return {
+          myItem: {
+            type: Array,
+            value: [
+              {                
+label: 'test',
+                note: 'test'              
+}
+            ]
+          },
+          data: {
+            type: Object,
+            value: {
+              label: '',
+              note: ''
+            }
+          }
+        };
       }
-      openDialog(e){
+      openDialog(e) {
         console.log(e.currentTarget)
-        this.$.alignedDialog.positionTarget =  e.currentTarget;
+        this.$.alignedDialog.positionTarget = e.currentTarget;
         this.$.alignedDialog.open()
-      
+
         // this.push('myItem','3')
       }
-      addItem(){
+      addItem() {
         console.log(this.data);
-        this.push('myItem',this.data)
+        this.push('myItem', this.data)
         // this.push('myItem','3')
       }
     }
