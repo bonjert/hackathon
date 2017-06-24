@@ -76,6 +76,7 @@
                 <app-toolbar>
                     <paper-icon-button icon="menu"></paper-icon-button>
                     <div main-title>myApp</div>
+                    <button on-click="login">login</button>
                     <paper-icon-button icon="search"></paper-icon-button>
                 </app-toolbar>
                  <paper-tabs selected="0" sticky>
@@ -119,12 +120,16 @@
             }
 
             ready(){
-                super.ready()
-                this.fire('action-login')
+                super.ready()   
+                
             }
 
             _userChanged(val){
                 console.log(val);
+            }
+
+            login(){
+                this.fire('action-login')
             }
 
 

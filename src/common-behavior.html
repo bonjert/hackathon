@@ -15,11 +15,13 @@
             );
         },
         fire: function(name,detail){
+            console.log('fire')
+            var opt = {bubbles: true, composed: true}
+            if(detail){
+                opt.detail = detail
+            }
             this.dispatchEvent(
-                new CustomEvent(name, {
-                    bubbles: true, composed: true,
-                    detail: detail
-                })
+                new CustomEvent(name,opt)
             );
         }
     };

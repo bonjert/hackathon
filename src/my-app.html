@@ -69,6 +69,12 @@
         
       }
 
+      ready(){
+        super.ready()
+        // this.addEventListener('change-path', this._changePage.bind(this))
+        // this.addEventListener('action-login', this._actionLogin.bind(this))
+      }
+
       connectedCallback(){
         super.connectedCallback()
         this.addEventListener('change-path', this._changePage.bind(this))
@@ -88,7 +94,7 @@
 
         firebase.initializeApp(config)
 
-        firebase.auth().onAuthStateChanged(function(user) {
+        firebase.auth().onAuthStateChanged((user)=>{
           if (user) {
             this.user = user;
           } 
