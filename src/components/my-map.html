@@ -23,7 +23,7 @@
             <!--<p>[[position.lat]]</p>
             <p>[[position.lng]]</p>
             <p>[[user.uid]]</p>-->
-            <button on-click='markerYouPoint'>[[btnname]]</button>
+            <button on-click="markerYouPoint">[[btnname]]</button>
 
         </div>
         <div id="map"></div>
@@ -141,6 +141,7 @@
                         if (pos.key in this.areaZones) {
                             this.areaZones[pos.key].setMap(null);
                             delete this.areaZones[pos.key];
+                            
                         }
                     }
                 }
@@ -187,6 +188,8 @@
                             + "</div>";
                         if (pos.key != 'current') {
                             // var n="onclick="""+my-map'";
+                            //this.
+                            //this.calcRoute(pos.key)
                             html += "<button id='btn_" + pos.key + "'>นำทาง</button>"
                             //;
                         }
@@ -214,6 +217,9 @@
             }
 
             showNotifi(pos) {
+                console.log('dsfasd')
+                //notify when meet mark
+
                 var self = this;
                 var collor = this.getRandomColor();
                 var areaZone = new google.maps.Circle({
@@ -228,6 +234,7 @@
             }
 
             markerYouPoint() {
+                //มาค และยกเลิก มาค
                 // console.log("xxxxx")
                 if ("set_hotspot" in this.markers) {
                     this.btnname = "Create Hotspot Point";
@@ -259,6 +266,8 @@
                                 lat: this.position.lat(),
                                 lng: this.position.lng()
                             }
+                            ///เมาวาง
+                            console.log('เมาวาง')
                             console.log(self.hotspot);
 
                         });
@@ -294,6 +303,7 @@
             }
 
             getRandomColor() {
+                //color of radius
                 var letters = '0123456789ABCDEF';
                 var color = '#00f';
                 for (var i = 0; i < 3; i++) {
