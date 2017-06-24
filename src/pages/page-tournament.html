@@ -16,12 +16,15 @@
             }
         </style>
         <div>
-            [[latitude]][[longitude]]
             <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
             </google-map-search>
-            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.736717" longitude="100.523186" zoom="17">
-                <google-map-marker on-google-map-marker-click="check" latitude="13.736717" longitude="100.523186" animation="DROP">
-                </google-map-marker>
+            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999" zoom="17">
+                <template is="dom-repeat" items="{{data}}">
+                    <google-map-marker on-google-map-marker-click="check" latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
+                        dfasdfasdf
+                    </google-map-marker>
+                </template>
+                
             </google-map>
         </div>
     </template>
