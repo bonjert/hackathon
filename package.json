@@ -11,7 +11,7 @@
     "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "polymer test",
     "test:integration": "polymer build # test that psk builds without error with the CLI",
-    "dev":"polymer serve --protocol h2 --hostname 0.0.0.0 --port 8080",
+    "dev":"polymer serve --hostname 0.0.0.0 --port 8080",
     "build":"polymer build",
     "pro":"polymer serve ./build/default --protocol h2 --manifest ./build/default/push-manifest.json  --hostname 0.0.0.0 --port 8081",
     "deploy":"firebase deploy --only hosting"
