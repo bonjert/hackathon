@@ -232,11 +232,11 @@
 
                     <!--<paper-icon-button icon="search"></paper-icon-button>-->
                 </app-toolbar>
-                <paper-tabs selected="0" sticky>
-                    <paper-tab>
+                <paper-tabs selected="{{page}}" attr-for-selected="name" sticky>
+                    <paper-tab name="tournament">
                         <iron-icon icon="icons:home"></iron-icon>Tournament
                     </paper-tab>
-                    <paper-tab>
+                    <paper-tab name="ranking">
                         <iron-icon icon="social:person"></iron-icon>Ranking
                     </paper-tab>
                     <!--<paper-tab>TAB 3</paper-tab>-->
@@ -320,7 +320,10 @@
             static get is() { return 'my-layout'; }
             static get properties() {
                 return {
-                    page: String,
+                    page: {
+                        type:String,
+                        observer: '_changePage'
+                    },
                     user: {
                         type: Object,
                         value: {},
@@ -373,6 +376,10 @@
             }
             openDialogLogin(){
                 this.$.dialogLogin.open();
+            }
+            _changePage(val){
+                console.log(val)
+                this.changePath({path:val})
             }
 
 
