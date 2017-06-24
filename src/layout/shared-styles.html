@@ -16,6 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       .card {
+        min-height: 100px;
         margin: 24px;
         padding: 16px;
         color: #757575;
@@ -25,6 +26,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .circle {
+        float: left;
+
         display: inline-block;
         width: 64px;
         height: 64px;
@@ -34,6 +37,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background: #ddd;
         font-size: 30px;
         line-height: 64px;
+      }
+
+      .header {
+        margin-bottom: 15px;
+      }
+
+      /*.card>.content {
+        padding-top: 5px;
+        border-top: 1px solid black;
+      }*/
+      .text-card {
+        float: right;
+        width: 70%;
+      }
+
+      .text-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: black;
+        border-bottom: 1px solid black;
+      }
+
+      .text-user::before {
+        content: 'BY';
+        position: relative;
       }
 
       h1 {

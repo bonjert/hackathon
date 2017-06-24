@@ -10,7 +10,8 @@
 <link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="./../../bower_components/paper-progress/paper-progress.html">
-
+<link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="./../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="./../common-behavior.html">
 
@@ -20,9 +21,10 @@
 <dom-module id="my-layout">
     <template>
         <style>
-             app-toolbar {
+            app-toolbar {
                 margin-bottom: 20px;
             }
+
             paper-icon-button {
                 --paper-icon-button-ink-color: white;
             }
@@ -68,6 +70,36 @@
             #drawerLayout {
                 z-index: 2;
             }
+
+            button {
+                background-color: #4285f4;
+                /* Green */
+                border: none;
+                color: white;
+                padding: 8px 20px;
+                border-radius: 2px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                /*border: 1px solid white;*/
+            }
+
+            button:hover {
+                cursor: pointer;
+            }
+
+            .circle {
+                display: inline-block;
+                width: 36px;
+                height: 36px;
+                text-align: center;
+                color: #555;
+                border-radius: 50%;
+                background: #ddd;
+                font-size: 30px;
+                line-height: 64px;
+            }
         </style>
 
 
@@ -76,16 +108,38 @@
                 <app-toolbar>
                     <paper-icon-button icon="menu"></paper-icon-button>
                     <div main-title>myApp</div>
-                    <button on-click="login">login</button>
-                    <paper-icon-button icon="search"></paper-icon-button>
+                    <!--<a href="">Sign In</a>-->
+                    <!--<button on-click="login">Sign In</button>-->
+                    <template is="dom-if" if="[[checkUser(user)]]">
+                        <button on-click="login">Sign In</button>
+                    </template>
+
+                    <template is="dom-if" if="[[!checkUser(user)]]">
+                        <img class="circle" src="[[user.photoURL]]" alt="Smiley face" height="42" width="42">
+                        <paper-icon-button icon="icons:arrow-drop-down" on-tap="openDialog"></paper-icon-button>
+
+                        <!--<span style="margin-left:5px">[[user.displayName]]</span>
+                        <button on-click="logout">Sign Out</button>-->
+                    </template>
+
+
+                    <!--<paper-icon-button icon="search"></paper-icon-button>-->
                 </app-toolbar>
-                 <paper-tabs selected="0" sticky>
+                <paper-tabs selected="0" sticky>
                     <paper-tab>TAB 1</paper-tab>
                     <paper-tab>TAB 2</paper-tab>
                     <paper-tab>TAB 3</paper-tab>
-                    </paper-tabs>
-                </app-header>
+                </paper-tabs>
             </app-header>
+            <paper-dialog id="alignedDialog" no-overlap horizontal-align="right">
+                <h2>[[user.displayName]]</h2>
+                <p>
+                  [[user.email]]
+                </p>
+                <div class="buttons">
+                    <paper-button onclick="innerDialog.open()">Sign Out</paper-button>
+                </div>
+            </paper-dialog>
             <!--<app-drawer-layout id="drawerLayout">
                 <app-drawer id="drawer" position="right">
                     <app-toolbar></app-toolbar>
@@ -106,32 +160,52 @@
     </template>
 
     <script>
-        class MyLayout extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
+        class MyLayout extends Polymer.mixinBehaviors([CommonBehavior], Polymer.Element) {
 
             static get is() { return 'my-layout'; }
             static get properties() {
                 return {
                     page: String,
-                    user:{
-                        type:Object,
-                        observer:'_userChanged'
+                    user: {
+                        type: Object,
+                        value: {},
+                        observer: '_userChanged'
                     }
                 }
             }
 
-            ready(){
-                super.ready()   
-                
+            ready() {
+                super.ready()
+
+            }
+            checkUser(val) {
+                return Object.keys(val).length == 0;
             }
 
-            _userChanged(val){
-                console.log(val);
+            _userChanged(val) {
+                console.log(Object.keys(val).length == 0);
+                return Object.keys(val).length == 0;
+                // console.log(val);
+                // if(Object.keys(val).length == 0){
+                //     return true;
+                // }
+                // else {
+                //     return false;
+                // }
             }
 
-            login(){
+            login() {
+                console.log(this.page.displayName)
                 this.fire('action-login')
             }
-
+            logout() {
+                window.localStorage.clear();
+            }
+            openDialog(e){
+                console.log(this.user)
+                this.$.alignedDialog.positionTarget =  e.currentTarget;
+                this.$.alignedDialog.open()
+            }
 
 
             // toggleDrawer() {
