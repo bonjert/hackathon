@@ -7,23 +7,49 @@
 <link rel="import" href="./../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="./../components/page-panel.html">
 <link rel="import" href="./../../bower_components/paper-button/paper-button.html">
-<script src="./../../bower_components/pouchdb/dist/pouchdb.js"></script>
+<link rel="import" href="./../components/my-map.html">
+<!--<script src="./../../bower_components/pouchdb/dist/pouchdb.js"></script>-->
+
+<link rel="import" href="./../../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="./../../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
 
 
 <dom-module id="page-main">
   <template>
     <style include="shared-styles">
-      :host {
+       :host {
         display: block;
         padding: 10px;
       }
-      .section{
-        padding:10px;
+
+      .section {
+        padding: 10px;
       }
-      paper-dialog{
-        width:70%;
+
+      paper-dialog {
+        width: 70%;
+      }
+
+      my-map {
+        height: 400px;
+        width: 100%;
+        border: solid red 2px;
       }
     </style>
+
+
+    <!--<firebase-document
+      path="/coordinates"
+      data="{{coordinatesList}}">
+    </firebase-document>
+    <app-indexeddb-mirror
+        key="cats"
+        data="{{coordinatesList}}"
+        persisted-data="{{persistedData}}">
+    </app-indexeddb-mirror>-->
+
+    <my-map data-map$="{{datamap}}" user="[[user]]"></my-map>
+
     <template is="dom-repeat" items="[[myItem]]">
       <div class="section">
         <div class="card">
@@ -32,7 +58,7 @@
           <p>[[item.note]]</p>
         </div>
       </div>
-     
+
     </template>
     <paper-fab id="fab" icon="add" on-tap="openDialog"></paper-fab>
     <paper-dialog id="alignedDialog" horizontal-align="right">
@@ -40,53 +66,68 @@
       <p>
         <paper-input label="latitude" value="{{form.lat}}"></paper-input>
         <paper-input label="longitude" value="{{form.lng}}"></paper-input>
-        <paper-input label="label" value="{{form.title}}"></paper-input>
-        <paper-textarea label="note" rows="2" value="{{form.msg}}"></paper-textarea>
+        <paper-input label="radius" value="{{form.radius}}"></paper-input>
+        <paper-input label="title" value="{{form.title}}"></paper-input>
+        <paper-textarea label="msg" rows="2" value="{{form.msg}}"></paper-textarea>
       </p>
       <div class="buttons">
         <paper-button on-tap="addSpot" dialog-confirm autofocus>ADD</paper-button>
       </div>
     </paper-dialog>
-    
+
   </template>
 
   <script>
     class PageMain extends Polymer.Element {
       static get is() { return 'page-main'; }
       static get properties() {
-              return {
-                  myItem:{
-                      type:Array,
-                      value:[
-                      ]
-                  },
-                  data:{
-                    type:Object,
-                    value:{
-                      label:'',
-                      note:''
-                    }
-                  },
-                  form:{
-                    type:Object,
-                    value:{}
-                  },
-                  user:Object
-              };
+        return {
+          myItem: {
+            type: Array,
+            value: [
+            ]
+          },
+          data: {
+            type: Object,
+            value: {
+              label: '',
+              note: ''
+            }
+          },
+          form: {
+            type: Object,
+            value: {}
+          },
+          datamap: {
+            type: Array,
+            value: [
+              { "location": "วัดลาดปลาเค้า", "lat": "13.846876", "lng": "100.604481" },
+              { "location": "หมู่บ้านอารียา", "lat": "13.847766", "lng": "100.605768" },
+              { "location": "สปีดเวย์", "lat": "13.845235", "lng": "100.602711" },
+              { "location": "สเต็ก ลุงหนวด", "lat": "13.862970", "lng": "100.613834" }
+            ],
+          },
+          user: Object,
+          coordinatesList:{
+            observer:'_coordinatesListChanged'
+          }
+        };
       }
 
-      ready(){
+      ready() {
         super.ready();
         this.fetchSpot();
       }
-      
 
-      fetchSpot(){
 
+      fetchSpot() {
+        this.usersRef = firebase.database().ref(`/users`)
         this.coordinatesRef = firebase.database().ref(`/coordinates`).orderByKey()
-        this.coordinatesRef.on("child_added", (snapshot)=>{
+        this.coordinatesRef.on("child_added", (snapshot) => {
           const item = snapshot.val();
           item.key = snapshot.key;
+          //item.user = this.usersRef.child(item.uid)
+          
           console.log(item)
         });
 
@@ -97,25 +138,29 @@
         var updates = {};
         //updates['/coordinates/' + newPostKey] = Object.assign({},this.form,{uid:this.user.uid});
         var dateNow = Date.now();
-        updates['/coordinates/' + newPostKey] = Object.assign({},this.form,{
-          uid:this.user.uid,
-          timestamp:dateNow,
-          timestampInv:0-dateNow
+        updates['/coordinates/' + newPostKey] = Object.assign({}, this.form, {
+          uid: this.user.uid,
+          timestamp: dateNow,
+          timestampInv: 0 - dateNow
         });
-        
+
         return firebase.database().ref().update(updates);
       }
 
-      openDialog(e){
+      _coordinatesListChanged(val){
+        console.log(val)
+      }
+
+      openDialog(e) {
         console.log(e.currentTarget);
         this.$.alignedDialog.positionTarget = e.currentTarget;
         this.$.alignedDialog.open()
-      
+
         // this.push('myItem','3')
       }
-      addItem(){
+      addItem() {
         console.log(this.data);
-        this.push('myItem',this.data)
+        this.push('myItem', this.data)
         // this.push('myItem','3')
       }
 
