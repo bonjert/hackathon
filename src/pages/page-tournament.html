@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="./../../bower_components/google-map/google-map.html">
+<dom-module id="page-tournament">
+    <template>
+        <style>
+             :host {
+                display: block;
+                padding: 10px 20px;
+            }
+
+            google-map {
+                height: 70vh;
+            }
+        </style>
+        <div>
+            [[latitude]][[longitude]]
+            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc">
+                <google-map-marker latitude="{{latitude}}" longitude="{{longitude}}" draggable="true" animation="DROP" icon="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png">
+                </google-map-marker>
+            </google-map>
+        </div>
+    </template>
+
+    <script>
+        class PageTournament extends Polymer.Element {
+            static get is() { return 'page-tournament'; }
+            static get properties() {
+                return {
+                    latitude:{
+                        type:String,
+                        value:'13.736717'
+                    },
+                    longitude:{
+                        type:String,
+                        value:'100.523186'
+                    }
+                    // // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // // Polymer.Element#rootPath
+                    // rootPath: String,
+                };
+            }
+        }
+
+        window.customElements.define(PageTournament.is, PageTournament);
+    </script>
+</dom-module>
