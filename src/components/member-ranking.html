@@ -1,0 +1,85 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!--<link rel="import" href="../layout/shared-styles.html">-->
+
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+
+<link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<dom-module id="member-ranking">
+
+    <template>
+        <style>
+            paper-icon-item {
+                margin-top: 15px;
+                background-color: white;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+            .ranking{
+                margin: 0px 15px;
+                font-size: 25px;
+            }
+        </style>
+
+        <div role="listbox">
+            <paper-icon-item>
+
+                <template is="dom-repeat" items={{dataRanking}}>
+                    <div class="ranking" >
+                        [[getIndex(index)]]
+                    </div>
+                    <div class="avatar blue" slot="item-icon">
+                        <img src="[[item.img]]" alt="[[item.user]]">
+                    </div>
+                    <paper-item-body two-line>
+                        <div>[[item.user]]</div>
+                        <div secondary>WIN [[item.win]]  LOSE  [[item.lose]] </div>
+                    </paper-item-body>
+            </paper-icon-item>
+            </template>
+        </div>
+
+    </template>
+
+    <script>
+        class memberRanking extends Polymer.Element {
+
+            static get is() { return 'member-ranking'; }
+
+            static get properties() {
+                return {
+                    dataRanking: {
+                        type: Array,
+                        value: [
+                            {
+                                id: 1,
+                                user: 'tonkung',
+                                img: '11111.img',
+                                win: 15,
+                                lose: 0,
+
+                            }
+
+                        ]
+                    }
+                };
+            }
+
+            constructor() {
+                super();
+            }
+
+            ready() {
+                super.ready();
+
+                Polymer.RenderStatus.afterNextRender(this, function () {
+
+                });
+            }
+            getIndex(index){
+                return index+1
+            }
+
+        }
+
+        window.customElements.define(memberRanking.is, memberRanking);
+    </script>
+</dom-module>
