@@ -12,6 +12,7 @@
 <link rel="import" href="./../../bower_components/paper-progress/paper-progress.html">
 
 <link rel="import" href="./../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="./../common-behavior.html">
 
 <link rel="import" href="../my-icons.html">
 
@@ -104,14 +105,29 @@
     </template>
 
     <script>
-        class MyLayout extends Polymer.Element {
+        class MyLayout extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
 
             static get is() { return 'my-layout'; }
             static get properties() {
                 return {
-                    page: String
+                    page: String,
+                    user:{
+                        type:Object,
+                        observer:'_userChanged'
+                    }
                 }
             }
+
+            ready(){
+                super.ready()
+                this.fire('action-login')
+            }
+
+            _userChanged(val){
+                console.log(val);
+            }
+
+
 
             // toggleDrawer() {
             //     // console.log(this.$.drawer.open());
