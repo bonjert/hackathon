@@ -218,9 +218,9 @@
                     <div main-title>MY APPS</div>
                     <!--<a href="">Sign In</a>-->
                     <!--<button on-click="login">Sign In</button>-->
-                    <template is="dom-if" if="[[checkUser(user)]]">
+                    <!--<template is="dom-if" if="[[checkUser(user)]]">
                         <button on-click="openDialogLogin">Sign In</button>
-                    </template>
+                    </template>-->
 
                     <template is="dom-if" if="[[!checkUser(user)]]">
                         <img class="circle" src="[[user.photoURL]]" alt="Smiley face" height="42" width="42">
@@ -339,10 +339,13 @@
 
             }
             checkUser(val) {
-                // console.log(val)
+                console.log(val)
                 if(val != null){
                     if(Object.keys(val).length != 0) this.$.dialogLogin.close();
                     return Object.keys(val).length == 0;
+                }
+                else{
+                    return false
                 }
               
             }
@@ -356,11 +359,11 @@
             login() {
                 //console.log(this.page.displayName)
                 // this.$.dialogLogin.close();
-                this.fire('action-login')
+                this.fire('action-login');
             }
             logout() {
                 this.$.alignedDialog.close();
-                window.localStorage.clear();
+                this.fire('action-signout');
             }
             openDialog(e) {
                 console.log(this.user)
