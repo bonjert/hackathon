@@ -27,7 +27,8 @@
     "paper-progress": "PolymerElements/paper-progress#^2.0.1",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
-    "firebase": "^4.1.3"
+    "firebase": "^4.1.3",
+    "polymerfire": "firebase/polymerfire#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0"
