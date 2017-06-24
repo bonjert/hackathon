@@ -1,16 +1,21 @@
-<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="./../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="./../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="./../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="./../bower_components/polymerfire/firebase-messaging.html">
+
 
 <link rel="import" href="layout/my-layout.html">
 <link rel="lazy-import" href="pages/page-tournament.html">
 <link rel="lazy-import" href="pages/page-ranking.html">
 <link rel="lazy-import" href="pages/page-view404.html">
 <!--<link rel="lazy-import" href="pages/page-profile.html">-->
+
+
 
 <script src="./../bower_components/firebase/firebase.js"></script>
 
@@ -21,6 +26,25 @@
     <app-route route="{{route}}" pattern="[[rootPattern]]:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
+    <firebase-app
+      auth-domain="hackathon-46ef4.firebaseapp.com"
+      database-url="https://hackathon-46ef4.firebaseio.com"
+      api-key="AIzaSyD_1N-jVH2y53ego7kzc_PlmGW0_LqavEc"
+      storage-bucket="hackathon-46ef4.appspot.com"
+      messaging-sender-id="177551575442"
+      project-id="hackathon-46ef4">
+    </firebase-app>
+
+    <firebase-auth id="auth" user="{{user}}" provider="facebook" on-error="handleError">
+    </firebase-auth>
+
+    <firebase-messaging id="messaging"
+      token="{{token}}"
+      on-message="handleMessage">
+    </firebase-messaging>
+
+    
+
     <my-layout id="myLayout" page="[[page]]" user="[[user]]">
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
         <page-ranking name="ranking" user="[[user]]"></page-ranking>
@@ -28,7 +52,15 @@
         <page-view404 name="view404"></page-view404>
       </iron-pages>
     </my-layout>
-
+    
+    <firebase-document
+      path="/users"
+      data="{{noteData}}">
+    </firebase-document>
+    s[[noteData]]
+    <template is="dom-repeat" item="{{noteData}}">
+      {{item}}
+    </template>
   </template>
 
   <script>
@@ -62,7 +94,7 @@
 
         
         window.AppRoot = this;
-        this._connFirebase();
+        //this._connFirebase();
         
       }
 
@@ -75,56 +107,34 @@
       connectedCallback(){
         super.connectedCallback()
         this.addEventListener('change-path', this._changePage.bind(this))
+        console.log('ddd')
         this.addEventListener('action-login', this._actionLogin.bind(this))
       }
 
       _connFirebase() {
-
-        var config = {
-          apiKey: "AIzaSyD_1N-jVH2y53ego7kzc_PlmGW0_LqavEc",
-          authDomain: "hackathon-46ef4.firebaseapp.com",
-          databaseURL: "https://hackathon-46ef4.firebaseio.com",
-          projectId: "hackathon-46ef4",
-          storageBucket: "hackathon-46ef4.appspot.com",
-          messagingSenderId: "177551575442"
-        };
-
-        firebase.initializeApp(config)
-
-        firebase.auth().onAuthStateChanged((user)=>{
-          if (user) {
-            this._setUserInfo(user);
-          } 
+        this.$.messaging.requestPermission().then(function() {
+          // permission was granted
+          console.log('permission was granted')
+        }, function(err) {
+          // permission was denied
         });
-
-        this.messaging = firebase.messaging()
-        this.messaging.requestPermission()
-          .then( ()=> {
-            return this.messaging.getToken()
-          })
-          .then( (token)=> {
-            console.log(token)
-          })
-          .catch( (err)=> {
-            console.log('Error Permission')
-          })
-
-
-        this.messaging.onMessage( (payload)=>{
-          console.log({ payload })
-        })
-
-
-
       }
 
       _actionLogin() {
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then( (result)=> {
-          this._setUserInfo(result.user)
-        }).catch(function (error) {
-          console.log(error)
+        console.log('ddd')
+        this.$.auth.signInWithPopup()
+        .then(function(response) {
+          console.log('login ok')
+        })
+        .catch(function(error) {
+          console.log('error')
         });
+        // var provider = new firebase.auth.FacebookAuthProvider();
+        // firebase.auth().signInWithPopup(provider).then( (result)=> {
+        //   this._setUserInfo(result.user)
+        // }).catch(function (error) {
+        //   console.log(error)
+        // });
       }
 
       _setUserInfo(user){
