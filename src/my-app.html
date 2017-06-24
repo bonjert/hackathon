@@ -14,7 +14,7 @@
 <link rel="lazy-import" href="pages/page-profile.html">
 
 <script src="./../bower_components/firebase/firebase.js"></script>
-<!--<script>
+<script>
   var config = {
     apiKey: "AIzaSyD_1N-jVH2y53ego7kzc_PlmGW0_LqavEc",
     authDomain: "hackathon-46ef4.firebaseapp.com",
@@ -41,9 +41,9 @@
   console.log('messaging')
   
   messaging.onMessage(function(payload){
-    console.log('msg :'+payload)
+    console.log({payload})
   })
-</script>-->
+</script>
 
 
 
@@ -55,12 +55,6 @@
     <app-route route="{{route}}" pattern="[[rootPattern]]:page" data="{{routeData}}" tail="{{subroute}}">
     </app-route>
 
-    <firebase-app auth-domain="hackathon-46ef4.firebaseapp.com" database-url="https://hackathon-46ef4.firebaseio.com" api-key="AIzaSyD_1N-jVH2y53ego7kzc_PlmGW0_LqavEc"
-      storage-bucket="hackathon-46ef4.appspot.com" messaging-sender-id="177551575442" project-id="hackathon-46ef4">
-    </firebase-app>
-    <firebase-auth id="auth" user="{{user}}" provider="facebook" on-error="handleError">
-
-
     <my-layout id="myLayout" page="[[page]]">
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
         <page-view1 name="view1"></page-view1>
@@ -70,7 +64,7 @@
         <page-view404 name="view404"></page-view404>
       </iron-pages>
     </my-layout>
-    <button on-click="login">login</button>
+    
   </template>
 
   <script>
@@ -143,19 +137,6 @@
         window.history.pushState({}, null, e.detail.path);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
-
-      login() {
-        this.$.auth.signInWithPopup()
-          .then(function (response) {
-            console.log(response)
-            // successful authentication response here
-          })
-          .catch(function (error) {
-            console.log(error)
-            // unsuccessful authentication response here
-          });
-      }
-
 
     }
 
