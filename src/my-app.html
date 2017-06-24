@@ -5,7 +5,7 @@
 
 <link rel="import" href="./../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="./../bower_components/polymerfire/firebase-auth.html">
-<link rel="import" href="./../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="./../bower_components/polymerfire/firebase-query.html">
 <link rel="import" href="./../bower_components/polymerfire/firebase-messaging.html">
 
 
@@ -43,6 +43,7 @@
       on-message="handleMessage">
     </firebase-messaging>
 
+ 
     
 
     <my-layout id="myLayout" page="[[page]]" user="[[user]]">
@@ -53,12 +54,14 @@
       </iron-pages>
     </my-layout>
     
-    <firebase-document
-      path="/users"
-      data="{{noteData}}">
-    </firebase-document>
-    s[[noteData]]
-    <template is="dom-repeat" item="{{noteData}}">
+ 
+       <firebase-query
+        id="query"
+        path="/users"
+        data="{{data}}">
+    </firebase-query>
+
+    <template is="dom-repeat" items="{{data}}">
       {{item}}
     </template>
   </template>
@@ -107,8 +110,8 @@
       connectedCallback(){
         super.connectedCallback()
         this.addEventListener('change-path', this._changePage.bind(this))
-        console.log('ddd')
         this.addEventListener('action-login', this._actionLogin.bind(this))
+        this.addEventListener('action-signout', this._actionSigout.bind(this))
       }
 
       _connFirebase() {
@@ -123,8 +126,8 @@
       _actionLogin() {
         console.log('ddd')
         this.$.auth.signInWithPopup()
-        .then(function(response) {
-          console.log('login ok')
+        .then(function(result) {
+          console.log(result.user)
         })
         .catch(function(error) {
           console.log('error')
@@ -137,12 +140,22 @@
         // });
       }
 
+      _actionSigout(){
+        this.$.auth.signOut()
+        .then(function(result) {
+          console.log(result)
+        })
+        .catch(function(error) {
+          console.log('error')
+        });
+      }
+
       _setUserInfo(user){
         this.user = user;
-        firebase.database().ref('/users/' + user.uid).once('value').then((snapshot)=> {
+        firebase.database().ref('/members/' + user.uid).once('value').then((snapshot)=> {
           var data = snapshot.val();
           if(!data){
-            firebase.database().ref('users/' + user.uid).set({
+            firebase.database().ref('members/' + user.uid).set({
               photoURL:user.photoURL,
               displayName:user.displayName,
               email:user.email
