@@ -339,8 +339,12 @@
 
             }
             checkUser(val) {
-                // if(Object.keys(val).length != 0)this.$.dialogLogin.close();
-                // return Object.keys(val).length == 0;
+                // console.log(val)
+                if(val != null){
+                    if(Object.keys(val).length != 0) this.$.dialogLogin.close();
+                    return Object.keys(val).length == 0;
+                }
+              
             }
 
             _userChanged(val) {
