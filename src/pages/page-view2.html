@@ -13,7 +13,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="./../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="./../../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="./../../bower_components/iron-icons/test/iron-icons.html">
+<link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="./../components/page-panel.html">
 <link rel="import" href="./../../bower_components/paper-button/paper-button.html">
@@ -34,11 +34,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <template is="dom-repeat" items="[[myItem]]">
       <div class="section">
-         <page-panel label="[[item.label]]">
-          <div>
-           [[item.note]]
-          </div>
-      </page-panel>
+        <div class="card">
+          <div class="circle">2</div>
+          <h1>[[item.label]]</h1>
+          <p>[[item.note]]</p>
+        </div>
       </div>
      
     </template>
@@ -55,12 +55,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button on-tap="addItem" dialog-confirm autofocus>ADD</paper-button>
       </div>
     </paper-dialog>
-    <!--<div class="card">
-      <div class="circle">2</div>
-      <h1>View Two</h1>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.</p>
-      <p>Id nam odio natum malorum, tibique copiosae expetenda mel ea.Detracto suavitate repudiandae no eum. Id adhuc minim soluta nam.Id nam odio natum malorum, tibique copiosae expetenda mel ea.</p>
-    </div>-->
+    
   </template>
 
   <script>
