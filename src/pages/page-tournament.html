@@ -16,14 +16,15 @@
             }
         </style>
         <div>
-            [[latitude]][[longitude]]
             <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
             </google-map-search>
-            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="{{latitude}}" longitude="{{longitude}}" zoom="17">
-                <google-map-marker on-google-map-marker-click="check" latitude="{{latitude}}" longitude="{{longitude}}" draggable="true"
-                    animation="DROP" icon="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png">
-
-                </google-map-marker>
+            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999" zoom="17">
+                <template is="dom-repeat" items="{{data}}">
+                    <google-map-marker on-google-map-marker-click="check" latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
+                        dfasdfasdf
+                    </google-map-marker>
+                </template>
+                
             </google-map>
         </div>
     </template>
@@ -33,14 +34,6 @@
             static get is() { return 'page-tournament'; }
             static get properties() {
                 return {
-                    latitude: {
-                        type: String,
-                        value: '13.736717'
-                    },
-                    longitude: {
-                        type: String,
-                        value: '100.523186'
-                    }
                     // // This shouldn't be neccessary, but the Analyzer isn't picking up
                     // // Polymer.Element#rootPath
                     // rootPath: String,
