@@ -6,3 +6,5 @@ yarn.lock
 npm-debug*
 /temp
 firebase-debug.log
+cert.pem
+key.pem
