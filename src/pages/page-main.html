@@ -39,7 +39,7 @@
       <h2>Aligned dialog</h2>
       <p>
         <paper-input label="latitude" value="{{form.lat}}"></paper-input>
-        <paper-input label="longitude" value="{{form.long}}"></paper-input>
+        <paper-input label="longitude" value="{{form.lng}}"></paper-input>
         <paper-input label="label" value="{{form.title}}"></paper-input>
         <paper-textarea label="note" rows="2" value="{{form.msg}}"></paper-textarea>
       </p>
@@ -77,7 +77,7 @@
 
       ready(){
         super.ready();
-        //this.fetchSpot();
+        this.fetchSpot();
       }
       
 
