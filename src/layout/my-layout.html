@@ -15,6 +15,9 @@
 <link rel="import" href="./../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="./../common-behavior.html">
 
+<link rel="import" href="./../../bower_components/iron-icons/maps-icons.html">
+
+<!--<link rel="import" href="../layout/shared-styles.html">-->
 <link rel="import" href="../my-icons.html">
 
 
@@ -100,14 +103,27 @@
                 font-size: 30px;
                 line-height: 64px;
             }
+            .buttons{
+                border-top: 1px solid #ddd;
+                background-color: #ddd;
+            }
+            paper-button{
+                background-color: #4285f4;
+                color: white;
+                border: 1px solid #ddd;
+            }   
+            #alignedDialog{
+                margin: 0;
+            }
         </style>
 
 
         <app-header-layout>
             <app-header style="z-index:1;" fixed condenses effects="waterfall">
                 <app-toolbar>
-                    <paper-icon-button icon="menu"></paper-icon-button>
-                    <div main-title>myApp</div>
+                    
+                    <!--<iron-icon icon="maps:near-me"></iron-icon>-->
+                    <div main-title>MY APPS</div>
                     <!--<a href="">Sign In</a>-->
                     <!--<button on-click="login">Sign In</button>-->
                     <template is="dom-if" if="[[checkUser(user)]]">
@@ -131,7 +147,23 @@
                     <paper-tab>TAB 3</paper-tab>
                 </paper-tabs>
             </app-header>
-            <paper-dialog id="alignedDialog" no-overlap horizontal-align="right">
+            <paper-dialog id="alignedDialog" no-overlap horizontal-align="right" vertical-align="top">
+                <!--<p>
+                    <div class="header">
+                        <span class="circle ">
+                            <img class="circle" src="[[user.photoURL]]" alt="Smiley face" height="36" width="36">
+                        </span>
+                        <span class="text-card">
+                            <div class="text-title">
+                                [[user.displayName]]
+                            </div>
+                            <div class="content">
+                                [[user.email]]
+                            </div>
+                        </span>
+                    </div>
+                </p>-->
+
                 <h2>[[user.displayName]]</h2>
                 <p>
                   [[user.email]]
@@ -201,9 +233,9 @@
             logout() {
                 window.localStorage.clear();
             }
-            openDialog(e){
+            openDialog(e) {
                 console.log(this.user)
-                this.$.alignedDialog.positionTarget =  e.currentTarget;
+                this.$.alignedDialog.positionTarget = e.currentTarget;
                 this.$.alignedDialog.open()
             }
 
