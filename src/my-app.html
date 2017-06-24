@@ -54,12 +54,10 @@
  
     <firebase-query
         id="query"
-        path="/users"
-        data="{{dataRanking}}">
+        path="/members"
+        data="{{dataRanking}}"
+    >
     </firebase-query>
-    <template is="dom-repeat" items="{{data}}">
-      {{item}}
-    </template>
 
     roken - {{token}}
  
