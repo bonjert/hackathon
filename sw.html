@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Service Workers - Communication</title>
+
+</head>
+
+<body>
+    <button type="button" onclick="oneWayCommunication()">One Way</button>
+    <button type="button" onclick="twoWayCommunication()">Two Way</button>
+    <button type="button" onclick="requestBroadcast()">Broadcast</button>
+    <script>
+        var i=0;
+        setInterval(()=>{i++;console.log(i)},2000);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                console.log(position)
+            });
+            // navigator.geolocation.getCurrentPosition((position) => {
+            //     console.log(position)
+            //     var gpsWorker = new Worker("gps_worker.js");
+
+            //     gpsWorker.onmessage = function (e) {
+
+            //         console.log(e.data);
+            //     };
+
+            //     gpsWorker.postMessage("Start GPS!");
+
+            //     gpsWorker.onerror = function (e) {
+            //         console.log("Error in file: " + e.filename + "\nline: " + e.lineno + "\nDescription: " + e.message);
+            //     };
+
+            // })
+        }
+
+        // if (typeof (Worker) !== "undefined") {
+        //     console.log("xxxxxx");
+        //     var w=new Worker("gps_worker.js");
+        // } else {
+        //     // Sorry! No Web Worker support..
+        // }
+
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition((position) => { })
+        // }
+
+        // if (navigator.serviceWorker) {
+            //console.log("ServiceWorkers are supported");
+
+            // navigator.serviceWorker.register('service-worker.js', {
+            //     scope: './sw.html'
+            // })
+            //     .then(function (reg) {
+            //         //console.log("ServiceWorker registered", reg);
+            //     })
+            //     .catch(function (error) {
+            //         console.log("Failed to register ServiceWorker", error);
+            //     });
+        // }
+
+        // function oneWayCommunication() {
+        //     // ONE WAY COMMUNICATION
+        //     var x = function (cb) {
+        //         console.log("func gps");
+        //         navigator.geolocation.getCurrentPosition((position) => {
+        //             cb(position);
+        //         });
+        //     }
+        //     if (navigator.serviceWorker.controller) {
+        //         console.log("Sending message to service worker");
+        //         navigator.serviceWorker.controller.postMessage({
+        //             "command": "oneWayCommunication",
+        //             "message": x
+        //         });
+        //     } else {
+        //         console.log("No active ServiceWorker");
+        //     }
+        // }
+
+        // function twoWayCommunication() {
+        //     if (navigator.serviceWorker.controller) {
+        //         var messageChannel = new MessageChannel();
+        //         messageChannel.port1.onmessage = function (event) {
+        //             console.log("Response from the SW : ", event.data.message);
+        //         }
+
+        //         console.log("Sending message to the service worker");
+        //         navigator.serviceWorker.controller.postMessage({
+        //             "command": "twoWayCommunication",
+        //             "message": "Hi, SW"
+        //         }, [messageChannel.port2]);
+        //     } else {
+        //         console.log("No active ServiceWorker");
+        //     }
+        // }
+
+        // function registerBroadcastReceiver() {
+        //     navigator.serviceWorker.onmessage = function (event) {
+        //         console.log("Broadcasted from SW : ", event.data);
+
+        //         var data = event.data;
+
+        //         if (data.command == "broadcastOnRequest") {
+        //             console.log("Broadcasted message from the ServiceWorker : ", data.message);
+        //         }
+        //     };
+        // }
+
+        // function requestBroadcast() {
+        //     console.log("Requesting for broadcast");
+        //     registerBroadcastReceiver();
+        //     if (navigator.serviceWorker.controller) {
+        //         console.log("Sending message to service worker");
+        //         navigator.serviceWorker.controller.postMessage({
+        //             "command": "broadcast"
+        //         });
+        //     } else {
+        //         console.log("No active ServiceWorker");
+        //     }
+        // }
+
+        // registerBroadcastReceiver();
+    </script>
+</body>
+
+</html>

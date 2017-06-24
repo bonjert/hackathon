@@ -1,4 +1,4 @@
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD42xWHFq6t7tuZXl8mrL8IYFKes2sTpDA"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD42xWHFq6t7tuZXl8mrL8IYFKes2sTpDA&libraries=geometry"></script>
 
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../layout/shared-styles.html">
@@ -18,15 +18,16 @@
                 width: 100%;
             }
         </style>
-        <!--<paper-button raised on-tap="setMap"> ทดสอบ</paper-button>-->
-        <!--<div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>-->
-        <!--{{dataMap}}///-->
+
+        <div>
+            <!--<p>[[position.lat]]</p>
+            <p>[[position.lng]]</p>
+            <p>[[user.uid]]</p>-->
+            <button on-click='markerYouPoint'>[[btnname]]</button>
+
+        </div>
         <div id="map"></div>
+
     </template>
 
     <script>
@@ -34,118 +35,277 @@
             static get is() { return 'my-map'; }
             static get properties() {
                 return {
+                    btnname: {
+                        value: "Create Hotspot Point"
+                    },
                     dataMap: {
                         type: Array,
-                        value: [],
+                        value: [
+                            { key: "12", "title": "วัดลาดปลาเค้า", r: 2000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211954", "lng": "100.5126691", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+                            { key: "13", "title": "หมู่บ้านอารียา", r: 4000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211964", "lng": "100.5177791", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+                            { key: "14", "title": "สปีดเวย์", r: 5000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211974", "lng": "100.5127891", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+                            { key: "15", "title": "สเต็ก ลุงหนวด", r: 6000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211984", "lng": "100.5127991", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" }
+                        ],
                         notify: true
                     },
+                    user: {
+                        type: Object
+                    },
+                    position: {
+                        type: Object
+                    },
+                    map: {
+                        type: Object
+                    },
+                    markers: {
+                        type: Object
+                    },
+                    areaZones: {
+                        type: Object
+                    },
+                    infowindow: {},
+                    directionsDisplay: {}
                 }
             }
             static get observers() {
                 return [
-                    'setMap(dataMap)'
+                    'userReady(user)'
                 ]
             }
-            // connectedCallback() {
-            //     super.connectedCallback();
-            //     if (navigator.geolocation) {
-            //         navigator.geolocation.getCurrentPosition(this.setMap.bind(this));
-            //     } else {
-            //         x.innerHTML = "Geolocation is not supported by this browser.";
-            //     }
-            // }
-            setMap(position) {
-                var map;
-                var markers = [];
-                if (position !== undefined) {
-                    // var uluru = { lat: position.coords.latitude, lng:position.coords.longitude };
-                    var uluru = { lat: 13.847860, lng: 100.604274 };
 
-                    var maps = new google.maps.Map(this.$.map, {
-                        zoom: 14,
-                        center: uluru
+            ready() {
+                super.ready();
+            }
+            userReady(user) {
+
+
+                this.maps = new google.maps.Map(this.$.map, {
+                    zoom: 14,
+                    center: { lat: 13.872062000000001, lng: 100.4980678 }
+                });
+                this.infowindow = new google.maps.InfoWindow();
+                this.markers = {};
+                this.areaZones = {};
+                this.directionsService = new google.maps.DirectionsService();
+                this.directionsDisplay = new google.maps.DirectionsRenderer();
+                this.directionsDisplay.setMap(this.maps);
+
+                //setInterval(() => {
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.watchPosition((position) => {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        this.position = pos;
+                        this.maps.setCenter(this.position);
+                        this.drawMap();
                     });
-                    var marker, info;
-                    for (var index = 0; index < position.length; index++) {
-                        // console.log(position[index].location);
+                }
 
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(position[index].lat, position[index].lng),
-                            map: maps,
-                            title: position[index].location
-                        });
-                        // marker.setMap(null)
-                        console.log(222222);
-                        info = new google.maps.InfoWindow();
+                //}, 2000);
+            }
 
-                        google.maps.event.addListener(marker, 'click', ((marker, index)=> {
-                            return function () {
-                                // console.log(position[index]);
-                                info.setContent(position[index].location);
-                                info.open(maps, marker);
-                            }
-                        })(marker, index));
+            drawMap() {
+
+                var self = this;
+                var c = new google.maps.LatLng(this.position.lat, this.position.lng);
+
+
+
+                //  var i = 1;
+                for (var index = 0; index < this.dataMap.length; index++) {
+
+                    var pos = this.dataMap[index];
+                    var p = new google.maps.LatLng(pos.lat, pos.lng);
+                    var r = this.getDistance(c, p);
+                    console.log(pos.title + " :: " + r);
+                    if (r <= pos.r) {
+                        var image = '/images/icon/grocery-store_32_yellow.png';
+                        //   window.setTimeout(() => {
+                        this.markerPoint({
+                            key: pos.key,
+                            title: pos.title,
+                            map: this.maps,
+                            position: p,
+                            icon: image,
+                            msg: pos.msg,
+                            image: pos.image,
+                            radius: pos.r,
+                            animation: google.maps.Animation.DROP
+                        }, true);
+                        //  }, i * 200);
+                        //  i++;
+                    } else {
+                        if (pos.key in this.areaZones) {
+                            this.areaZones[pos.key].setMap(null);
+                            delete this.areaZones[pos.key];
+                        }
                     }
-                    ///กำลังแก้ไขให้ คืนค่า ละ ลอง
-     
-                //      // Adds a marker to the map and push to the array.
-                    // var addMarker = (location) => {
-                    //     var marker = new google.maps.Marker({
-                    //         position: location,
-                    //         map: map
-                    //     });
-                    //     // console.log(marker);
-                    //     markers.push(marker);
-                    //     console.log(markers);
-                    //     console.log(this.dataMap);
-                    //     // this.set('dataMap',markers)
-                    // }
-                    // var haightAshbury = { lat: 37.769, lng: -122.446 };
+                }
 
-                    // map = new google.maps.Map(this.$.map, {
-                    //     zoom: 12,
-                    //     center: haightAshbury,
-                    //     mapTypeId: 'terrain'
-                    // });
+                this.markerPoint({
+                    key: "current",
+                    map: this.maps,
+                    title: "ตำแหน่งปัจจุบัน",
+                    draggable: true,
+                    position: c,
+                    icon: '/images/icon/my-map-location_32_orange.png',
+                    msg: this.user.displayName,
+                    image: this.user.photoURL,
+                    animation: google.maps.Animation.DROP
+                }, false);
 
-                    // // This event listener will call addMarker() when the map is clicked.
-                    // map.addListener('click', (event) => {
-                    //     addMarker(event.latLng);
-                    // });
+                //this.calcRoute(15);
 
-                    // // Adds a marker at the center of the map.
-                    // addMarker(haightAshbury);
-                
+            }
 
-               
+            markerPoint(pos, enable_Circle) {
+                var self = this;
+                if (pos.key in this.markers) {
+                    this.markers[pos.key].setPosition(pos.position);
+                    if (pos.key in this.areaZones) {
 
+                    } else {
+                        if (enable_Circle) {
+                            if (enable_Circle) {
+                                self.showNotifi(pos);
+                            }
+                        }
+                    }
 
-                // // Sets the map on all markers in the array.
-                // function setMapOnAll(map) {
-                //     for (var i = 0; i < markers.length; i++) {
-                //         markers[i].setMap(map);
-                //     }
-                // }
+                } else {
+                    var marker = new google.maps.Marker(pos);
+                    this.markers[pos.key] = marker;
+                    google.maps.event.addListener(marker, 'click', function () {
+                        this.setAnimation(google.maps.Animation.BOUNCE);
+                        var html = "<div style='text-align:center'>"
+                            + "<p><b>" + this.title + "</b>"
+                            + "<br><img  class='circle' src='" + this.image + "'>"
+                            + "<br><span>" + this.msg + "</span>"
+                            + "</div>";
+                        if (pos.key != 'current') {
+                            // var n="onclick="""+my-map'";
+                            html += "<button id='btn_" + pos.key + "'>นำทาง</button>"
+                            //;
+                        }
+                        self.infowindow.setContent(html);
+                        self.infowindow.open(self.maps, this);
+                    });
 
-                // // Removes the markers from the map, but keeps them in the array.
-                // function clearMarkers() {
-                //     setMapOnAll(null);
-                // }
+                    if (pos.key == "current") {
+                        google.maps.event.addListener(
+                            self.markers["current"],
+                            'drag',
+                            function (event) {
+                                self.position = {
+                                    lat: this.position.lat(),
+                                    lng: this.position.lng()
+                                }
+                                self.drawMap();
+                            });
+                    }
 
-                // // Shows any markers currently in the array.
-                // function showMarkers() {
-                //     setMapOnAll(map);
-                // }
-
-                // // Deletes all markers in the array by removing references to them.
-                // function deleteMarkers() {
-                //     clearMarkers();
-                //     markers = [];
+                    if (enable_Circle) {
+                        self.showNotifi(pos);
+                    }
                 }
             }
-            // addMakers(maker){
-            //     console.log(maker);
-            // }
+
+            showNotifi(pos) {
+                var self = this;
+                var collor = this.getRandomColor();
+                var areaZone = new google.maps.Circle({
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: collor,
+                    map: pos.map,
+                    center: pos.position,
+                    radius: pos.radius
+                });
+                this.areaZones[pos.key] = areaZone;
+            }
+
+            markerYouPoint() {
+                // console.log("xxxxx")
+                if ("set_hotspot" in this.markers) {
+                    this.btnname = "Create Hotspot Point";
+                    google.maps.event.clearInstanceListeners(this.markers["set_hotspot"]);
+                    this.markers["set_hotspot"].setMap(null);
+                    delete this.markers["set_hotspot"];
+
+                } else {
+
+                    this.markerPoint({
+                        key: "set_hotspot",
+                        map: this.maps,
+                        draggable: true,
+                        title: "กำหนดจุด Hotspot",
+                        position: this.markers["current"].getPosition(),
+                        icon: '/images/icon/grocery-store_32.png',
+                        msg: "กำหนดจุด Hotspot",
+                        image: "/images/icon/Originals/grocery-store.png"
+                    }, false);
+
+                    this.hotspot = this.position;
+                    this.btnname = "Save Hotspot Point";
+                    var self = this;
+                    google.maps.event.addListener(
+                        self.markers["set_hotspot"],
+                        'drag',
+                        function (event) {
+                            self.hotspot = {
+                                lat: this.position.lat(),
+                                lng: this.position.lng()
+                            }
+                            console.log(self.hotspot);
+
+                        });
+                }
+
+            }
+
+
+            calcRoute(dest) {
+                //var start = document.getElementById('start').value;
+                // var end = document.getElementById('end').value;
+                console.log(this.markers["current"].getPlace());
+                var request = {
+                    origin: this.markers["current"].getPosition(),
+                    destination: this.markers[dest].getPosition(),
+                    travelMode: 'DRIVING',
+                    drivingOptions: {
+                        departureTime: new Date(/* now, or future date */),
+                        trafficModel: 'pessimistic'
+                    },
+                };
+                this.directionsService.route(request, (result, status) => {
+                    if (status == 'OK') {
+                        this.directionsDisplay.setDirections(result);
+                        console.log(result);
+                    }
+                });
+            }
+
+            getDistance(latLngA, latLngB) {
+                var r = google.maps.geometry.spherical.computeDistanceBetween(latLngA, latLngB);
+                return r;
+            }
+
+            getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#00f';
+                for (var i = 0; i < 3; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+
+
+
+
         }
 
         window.customElements.define(Mymap.is, Mymap);

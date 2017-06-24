@@ -101,15 +101,15 @@
           datamap: {
             type: Array,
             value: [
-              { "location": "วัดลาดปลาเค้า", "lat": "13.846876", "lng": "100.604481" },
-              { "location": "หมู่บ้านอารียา", "lat": "13.847766", "lng": "100.605768" },
-              { "location": "สปีดเวย์", "lat": "13.845235", "lng": "100.602711" },
-              { "location": "สเต็ก ลุงหนวด", "lat": "13.862970", "lng": "100.613834" }
-            ],
+              { key: "12", "title": "วัดลาดปลาเค้า", r: 2000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211954", "lng": "100.5126691", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+              { key: "13", "title": "หมู่บ้านอารียา", r: 4000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211964", "lng": "100.5177791", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+              { key: "14", "title": "สปีดเวย์", r: 5000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211974", "lng": "100.5127891", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" },
+              { key: "15", "title": "สเต็ก ลุงหนวด", r: 6000, "msg": "วัดลาดปลาเค้า", "lat": "13.8211984", "lng": "100.5127991", uid: "QNIHiw25p3QB9htIVEb5tsIDy7f2" }
+            ]
           },
           user: Object,
-          coordinatesList:{
-            observer:'_coordinatesListChanged'
+          coordinatesList: {
+            observer: '_coordinatesListChanged'
           }
         };
       }
@@ -130,7 +130,7 @@
         this.coordinatesRef.on("child_added", (snapshot) => {
           const item = snapshot.val();
           item.key = snapshot.key;
-          this.usersRef.child(item.uid).once('value',snap=>{
+          this.usersRef.child(item.uid).once('value', snap => {
             item.user = snap.val()
             item.user.key = snap.key
             console.log(item)
@@ -153,7 +153,7 @@
         return firebase.database().ref().update(updates);
       }
 
-      _coordinatesListChanged(val){
+      _coordinatesListChanged(val) {
         console.log(val)
       }
 
