@@ -13,14 +13,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="page-ranking">
   <template>
     <style>
-      :host {
+       :host {
         display: block;
 
         padding: 10px 20px;
       }
     </style>
-    <div>PageRanking</div>
-    <member-ranking></member-ranking>
+    <!--<div>PageRanking</div>-->
+    <member-ranking data-ranking$="{{data}}"></member-ranking>
   </template>
 
   <script>
@@ -31,6 +31,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // This shouldn't be neccessary, but the Analyzer isn't picking up
           // Polymer.Element#rootPath
           rootPath: String,
+          data: {
+            type: Array,
+            value: [
+              {
+                id: 1,
+                user: 'tonkung',
+                img: '11111.img',
+                win: 15,
+                lose: 0,
+
+              }
+
+            ]
+          }
         };
       }
     }
