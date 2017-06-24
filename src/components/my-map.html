@@ -197,7 +197,7 @@
                     if (pos.key == "current") {
                         google.maps.event.addListener(
                             self.markers["current"],
-                            'drag',
+                            'dragend',
                             function (event) {
                                 self.position = {
                                     lat: this.position.lat(),
@@ -253,7 +253,7 @@
                     var self = this;
                     google.maps.event.addListener(
                         self.markers["set_hotspot"],
-                        'drag',
+                        'dragend',
                         function (event) {
                             self.hotspot = {
                                 lat: this.position.lat(),
