@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./../../bower_components/google-map/google-map-marker.html">
 <link rel="import" href="./../../bower_components/google-map/google-map.html">
+<link rel="import" href="./../../bower_components/google-map/google-map-search.html">
+<link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
 <dom-module id="page-tournament">
     <template>
         <style>
@@ -15,8 +17,12 @@
         </style>
         <div>
             [[latitude]][[longitude]]
-            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc">
-                <google-map-marker latitude="{{latitude}}" longitude="{{longitude}}" draggable="true" animation="DROP" icon="http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/map-marker-icon.png">
+            <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
+            </google-map-search>
+            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="{{latitude}}" longitude="{{longitude}}" zoom="17">
+                <google-map-marker on-google-map-marker-click="check" latitude="{{latitude}}" longitude="{{longitude}}" draggable="true"
+                    animation="DROP" icon="icons:account-circle">
+
                 </google-map-marker>
             </google-map>
         </div>
@@ -27,18 +33,25 @@
             static get is() { return 'page-tournament'; }
             static get properties() {
                 return {
-                    latitude:{
-                        type:String,
-                        value:'13.736717'
+                    latitude: {
+                        type: String,
+                        value: '13.736717'
                     },
-                    longitude:{
-                        type:String,
-                        value:'100.523186'
+                    longitude: {
+                        type: String,
+                        value: '100.523186'
                     }
                     // // This shouldn't be neccessary, but the Analyzer isn't picking up
                     // // Polymer.Element#rootPath
                     // rootPath: String,
                 };
+            }
+            ready() {
+                super.ready()
+                // this.addEventListener('google-map-marker-click', this.check.bind(this))
+            }
+            check() {
+                console.log('1234')
             }
         }
 
