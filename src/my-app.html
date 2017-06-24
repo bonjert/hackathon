@@ -42,28 +42,27 @@
       token="{{token}}"
       on-message="handleMessage">
     </firebase-messaging>
-
- 
     
-
     <my-layout id="myLayout" page="[[page]]" user="[[user]]">
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-        <page-ranking name="ranking" user="[[user]]"></page-ranking>
+        <page-ranking name="ranking" user="[[user]]" data="{{dataRanking}}"></page-ranking>
         <page-tournament name="tournament" user="[[user]]"></page-tournament>
         <page-view404 name="view404"></page-view404>
       </iron-pages>
     </my-layout>
     
  
-       <firebase-query
+    <firebase-query
         id="query"
         path="/users"
-        data="{{data}}">
+        data="{{dataRanking}}">
     </firebase-query>
-
     <template is="dom-repeat" items="{{data}}">
       {{item}}
     </template>
+
+    roken - {{token}}
+ 
   </template>
 
   <script>
@@ -97,12 +96,13 @@
 
         
         window.AppRoot = this;
-        //this._connFirebase();
+        
         
       }
 
       ready(){
         super.ready()
+        this._connFirebase();
         // this.addEventListener('change-path', this._changePage.bind(this))
         // this.addEventListener('action-login', this._actionLogin.bind(this))
       }
@@ -115,8 +115,8 @@
       }
 
       _connFirebase() {
-        this.$.messaging.requestPermission().then(function() {
-          // permission was granted
+        console.log(this)
+        this.$.messaging.requestPermission().then(()=>{
           console.log('permission was granted')
         }, function(err) {
           // permission was denied
@@ -126,8 +126,8 @@
       _actionLogin() {
         console.log('ddd')
         this.$.auth.signInWithPopup()
-        .then(function(result) {
-          console.log(result.user)
+        .then((result)=>{
+          this._setUserInfo(result.user)
         })
         .catch(function(error) {
           console.log('error')
@@ -152,13 +152,17 @@
 
       _setUserInfo(user){
         this.user = user;
+        console.log(user)
         firebase.database().ref('/members/' + user.uid).once('value').then((snapshot)=> {
           var data = snapshot.val();
+          console.log(this.token)
           if(!data){
+            
             firebase.database().ref('members/' + user.uid).set({
               photoURL:user.photoURL,
               displayName:user.displayName,
-              email:user.email
+              email:user.email,
+              tokenFcm:this.token
             });
           }
         });
