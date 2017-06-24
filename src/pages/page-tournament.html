@@ -14,15 +14,49 @@
             google-map {
                 height: 70vh;
             }
+
+            .circle {
+                height: 64px;
+                width: 64px;
+                margin-top: 10px;
+                line-height: 64px;
+                display: inline-block;
+                text-align: center;
+                color: #555;
+                border-radius: 50%;
+                background: #ddd; 
+            }
+            paper-button {
+                margin: 10px;
+            }
         </style>
         <div>
             <button on-click="openDialog">click</button>
             <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
             </google-map-search>
-            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999" zoom="17">
+            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999"
+                zoom="17">
                 <template is="dom-repeat" items="{{data}}">
                     <google-map-marker on-google-map-marker-click="check" latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
-                        dfasdfasdf
+                       <span style="display: block; text-align: center;">[[item.displayName]]</span>
+                       <img src="[[item.photoURL]]" style="height: 64px;
+                        text-align: center;
+                        width: 64px;
+                        margin-top: 10px;
+                        line-height: 64px;
+                        display: block;
+                        text-align: center;
+                        color: #555;
+                        border-radius: 50%;
+                        background: #ddd;
+                         float:left" alt="[[item.displayName]]">
+               
+                    
+                    <!--<paper-button raised style="margin: 10px;" on-click="fight">FIGHT !!!</paper-button>-->
+                    <BR>
+                    
+                        <!--<div>[[item.displayName]]</div>
+                        <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>-->
                     </google-map-marker>
                 </template>
             </google-map>
@@ -59,6 +93,7 @@
             openDialog(){
                 console.log('1234')
                 this.$.modal.open()
+
             }
         }
 
