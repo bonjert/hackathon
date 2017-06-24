@@ -18,9 +18,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px 20px;
       }
+      .circle{
+        height: 64px;
+        width: 64px;
+        line-height: 64px;
+        display: inline-block;
+        text-align: center;
+        color: #555;
+        border-radius: 50%;
+        background: #ddd;
+      }
     </style>
     <!--<div>PageRanking</div>-->
     <member-ranking data-ranking$="{{data}}"></member-ranking>
+    <!--<div class="circle">
+      121212
+    </div>-->
   </template>
 
   <script>
@@ -33,6 +46,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           rootPath: String,
           data: {
             type: Array,
+            observer:'getData',
             value: [
               {
                 id: 1,
@@ -40,12 +54,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 img: '11111.img',
                 win: 15,
                 lose: 0,
-
               }
-
             ]
           }
         };
+      }
+      getData(e){
+        console.log(e);
       }
     }
 
