@@ -11,17 +11,17 @@
 <link rel="import" href="./../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="./../../bower_components/paper-progress/paper-progress.html">
 
+<link rel="import" href="./../../bower_components/paper-tabs/paper-tabs.html">
+
 <link rel="import" href="../my-icons.html">
 
 
 <dom-module id="my-layout">
     <template>
         <style>
-            app-toolbar {
-                background-color: #4285f4;
-                color: #fff;
+             app-toolbar {
+                margin-bottom: 20px;
             }
-
             paper-icon-button {
                 --paper-icon-button-ink-color: white;
             }
@@ -38,12 +38,14 @@
             }
 
             app-header {
-                @apply --layout-fixed-top;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 132px;
                 color: #fff;
-                --app-header-background-rear-layer: {
-                    background-color: #ef6c00;
-                }
-                ;
+                background-color: #4285f4;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
             app-drawer {
@@ -55,7 +57,7 @@
             }
 
             .container {
-                padding: 64px;
+                padding-top: 132px;
             }
 
             sample-content {
@@ -69,14 +71,20 @@
 
 
         <app-header-layout>
-            <app-header style="z-index:1;" fixed>
+            <app-header style="z-index:1;" fixed condenses effects="waterfall">
                 <app-toolbar>
-                    <paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-                    <div main-title>My app</div>
-                    <paper-progress value="10" indeterminate bottom-item></paper-progress>
+                    <paper-icon-button icon="menu"></paper-icon-button>
+                    <div main-title>myApp</div>
+                    <paper-icon-button icon="search"></paper-icon-button>
                 </app-toolbar>
+                 <paper-tabs selected="0" sticky>
+                    <paper-tab>TAB 1</paper-tab>
+                    <paper-tab>TAB 2</paper-tab>
+                    <paper-tab>TAB 3</paper-tab>
+                    </paper-tabs>
+                </app-header>
             </app-header>
-            <app-drawer-layout id="drawerLayout">
+            <!--<app-drawer-layout id="drawerLayout">
                 <app-drawer id="drawer" position="right">
                     <app-toolbar></app-toolbar>
                     <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
@@ -85,7 +93,7 @@
                         <a name="view3" href="view3">View Three</a>
                     </iron-selector>
                 </app-drawer>
-            </app-drawer-layout>
+            </app-drawer-layout>-->
 
             <!--<sample-content size="10"></sample-content>-->
             <div class="container">
@@ -105,10 +113,10 @@
                 }
             }
 
-            toggleDrawer() {
-                // console.log(this.$.drawer.open());
-                this.$.drawer.open();
-            }
+            // toggleDrawer() {
+            //     // console.log(this.$.drawer.open());
+            //     this.$.drawer.open();
+            // }
 
         }
 
