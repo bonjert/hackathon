@@ -169,7 +169,7 @@
                   [[user.email]]
                 </p>
                 <div class="buttons">
-                    <paper-button onclick="innerDialog.open()">Sign Out</paper-button>
+                    <paper-button on-tap="logout">Sign Out</paper-button>
                 </div>
             </paper-dialog>
             <!--<app-drawer-layout id="drawerLayout">
@@ -231,6 +231,7 @@
                 this.fire('action-login')
             }
             logout() {
+                this.$.alignedDialog.close();
                 window.localStorage.clear();
             }
             openDialog(e) {
