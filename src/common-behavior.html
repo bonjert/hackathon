@@ -13,6 +13,14 @@
                     detail: detail
                 })
             );
+        },
+        fire: function(name,detail){
+            this.dispatchEvent(
+                new CustomEvent(name, {
+                    bubbles: true, composed: true,
+                    detail: detail
+                })
+            );
         }
     };
 

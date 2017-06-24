@@ -3,7 +3,7 @@
 <link rel="import" href="../layout/shared-styles.html">
 <link rel="import" href="../common-behavior.html">
 
-<dom-module id="page-view3">
+<dom-module id="page-main">
   <template>
     <style include="shared-styles">
        :host {
@@ -28,8 +28,8 @@
   </template>
 
   <script>
-    class PageView3 extends Polymer.mixinBehaviors([CommonBehavior], Polymer.Element) {
-      static get is() { return 'page-view3'; }
+    class PageMain extends Polymer.mixinBehaviors([CommonBehavior], Polymer.Element) {
+      static get is() { return 'page-main'; }
       static get properties() {
         return {
           form: {
@@ -75,6 +75,6 @@
 
     }
 
-    window.customElements.define(PageView3.is, PageView3);
+    window.customElements.define(PageMain.is, PageMain);
   </script>
 </dom-module>
