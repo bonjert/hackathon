@@ -26,7 +26,7 @@
 
     </style>
     
-    <my-map data-map$="{{datamap}}"></my-map>
+    <my-map data-map$="{{datamap}}" user="[[user]]"></my-map>
     <!--{{datamap}}-->
     <!--<div class="card">
       <div class="circle">1</div>
@@ -58,7 +58,8 @@
               longitude: '',
               name_localtion: '',
             }
-          }
+          },
+          user:Object
         }
       }
       connectedCallback() {

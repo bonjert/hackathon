@@ -8,7 +8,6 @@
 
 <link rel="import" href="layout/my-layout.html">
 <link rel="lazy-import" href="pages/page-view1.html">
-<link rel="lazy-import" href="pages/page-view2.html">
 <link rel="lazy-import" href="pages/page-main.html">
 <link rel="lazy-import" href="pages/page-view404.html">
 <link rel="lazy-import" href="pages/page-profile.html">
@@ -24,9 +23,8 @@
 
     <my-layout id="myLayout" page="[[page]]" user="[[user]]">
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-        <page-view1 name="view1"></page-view1>
-        <page-view2 name="view2"></page-view2>
-        <page-main name="main"></page-main>
+        <page-view1 name="view1" user="[[user]]"></page-view1>
+        <page-main name="main" user="[[user]]"></page-main>
         <page-profile name="profile"></page-profile>
         <page-view404 name="view404"></page-view404>
       </iron-pages>
