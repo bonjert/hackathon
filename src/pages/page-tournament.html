@@ -16,6 +16,7 @@
             }
         </style>
         <div>
+            <button on-click="openDialog">click</button>
             <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
             </google-map-search>
             <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999" zoom="17">
@@ -24,8 +25,17 @@
                         dfasdfasdf
                     </google-map-marker>
                 </template>
-                
             </google-map>
+            <paper-dialog id="modal">
+                 <h2>ALERT MESSAGE !! </h2>
+                <p>
+                    คุณ NAME ต้องการจะสู้กับคุณ
+                </p>
+            <div class="buttons" style="border-top:1px solid #ddd">
+                <paper-button dialog-confirm autofocus>YES</paper-button>
+                <paper-button dialog-confirm autofocus>NO</paper-button>
+            </div>
+            </paper-dialog>
         </div>
     </template>
 
@@ -45,6 +55,10 @@
             }
             check() {
                 console.log('1234')
+            }
+            openDialog(){
+                console.log('1234')
+                this.$.modal.open()
             }
         }
 
