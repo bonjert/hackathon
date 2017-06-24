@@ -1,45 +1,95 @@
-<!--test manage firebase-->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../layout/shared-styles.html">
-<link rel="import" href="../common-behavior.html">
+<link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="./../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="./../components/page-panel.html">
+<link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<script src="./../../bower_components/pouchdb/dist/pouchdb.js"></script>
+
 
 <dom-module id="page-main">
   <template>
     <style include="shared-styles">
-       :host {
+      :host {
         display: block;
-
         padding: 10px;
       }
+      .section{
+        padding:10px;
+      }
+      paper-dialog{
+        width:70%;
+      }
     </style>
-
-    <div class="card">
-      <button on-click="_testLink">go to view 2</button>
-      <hr>
-      <input type="text" value="{{form.lat::input}}" placeholder="lat"><br>
-      <input type="text" value="{{form.long::input}}" placeholder="long"><br>
-      <input type="text" value="{{form.title::input}}" placeholder="title"><br>
-      <input type="text" value="{{form.msg::input}}" placeholder="msg"><br>
-      <button on-click="addSpot">send</button>
-    </div>
-
-    <button on-click="login">login</button>
-
+    <template is="dom-repeat" items="[[myItem]]">
+      <div class="section">
+        <div class="card">
+          <div class="circle">2</div>
+          <h1>[[item.label]]</h1>
+          <p>[[item.note]]</p>
+        </div>
+      </div>
+     
+    </template>
+    <paper-fab id="fab" icon="add" on-tap="openDialog"></paper-fab>
+    <paper-dialog id="alignedDialog" horizontal-align="right">
+      <h2>Aligned dialog</h2>
+      <p>
+        <paper-input label="latitude" value="{{form.lat}}"></paper-input>
+        <paper-input label="longitude" value="{{form.long}}"></paper-input>
+        <paper-input label="label" value="{{form.title}}"></paper-input>
+        <paper-textarea label="note" rows="2" value="{{form.msg}}"></paper-textarea>
+      </p>
+      <div class="buttons">
+        <paper-button on-tap="addSpot" dialog-confirm autofocus>ADD</paper-button>
+      </div>
+    </paper-dialog>
+    
   </template>
 
   <script>
-    class PageMain extends Polymer.mixinBehaviors([CommonBehavior], Polymer.Element) {
+    class PageMain extends Polymer.Element {
       static get is() { return 'page-main'; }
       static get properties() {
-        return {
-          form: {
-            type: Object,
-            value: {}
-          }
-        }
+              return {
+                  myItem:{
+                      type:Array,
+                      value:[
+                      ]
+                  },
+                  data:{
+                    type:Object,
+                    value:{
+                      label:'',
+                      note:''
+                    }
+                  },
+                  form:{
+                    type:Object,
+                    value:{}
+                  },
+                  user:Object
+              };
       }
-      _testLink() {
-        this.changePath({ path: '/view2' })
+
+      ready(){
+        super.ready();
+        //this.fetchSpot();
+      }
+      
+
+      fetchSpot(){
+
+        this.coordinatesRef = firebase.database().ref(`/coordinates`).orderByKey()
+        this.coordinatesRef.on("child_added", (snapshot)=>{
+          const item = snapshot.val();
+          item.key = snapshot.key;
+          console.log(item)
+        });
+
       }
 
       addSpot() {
@@ -48,7 +98,7 @@
         //updates['/coordinates/' + newPostKey] = Object.assign({},this.form,{uid:this.user.uid});
         var dateNow = Date.now();
         updates['/coordinates/' + newPostKey] = Object.assign({},this.form,{
-          uid:'ccFvzfJCwEYh6JcLj63CtO5SKgf1',
+          uid:this.user.uid,
           timestamp:dateNow,
           timestampInv:0-dateNow
         });
@@ -56,20 +106,17 @@
         return firebase.database().ref().update(updates);
       }
 
-      login() {
-        var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then( (result)=> {
-          // var token = result.credential.accessToken;
-          // var user = result.user;
-          this.user = result.user
-          console.log(result)
-        }).catch(function (error) {
-          // var errorCode = error.code;
-          // var errorMessage = error.message;
-          // var email = error.email;
-          // var credential = error.credential;
-          console.log(error)
-        });
+      openDialog(e){
+        console.log(e.currentTarget);
+        this.$.alignedDialog.positionTarget = e.currentTarget;
+        this.$.alignedDialog.open()
+      
+        // this.push('myItem','3')
+      }
+      addItem(){
+        console.log(this.data);
+        this.push('myItem',this.data)
+        // this.push('myItem','3')
       }
 
 
