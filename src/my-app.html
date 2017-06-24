@@ -23,7 +23,6 @@
 
     <my-layout id="myLayout" page="[[page]]" user="[[user]]">
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
-        <page-view1 name="view1" user="[[user]]"></page-view1>
         <page-main name="main" user="[[user]]"></page-main>
         <page-profile name="profile"></page-profile>
         <page-view404 name="view404"></page-view404>
@@ -94,7 +93,7 @@
 
         firebase.auth().onAuthStateChanged((user)=>{
           if (user) {
-            this.user = user;
+            this._setUserInfo(user);
           } 
         });
 
@@ -122,9 +121,23 @@
       _actionLogin() {
         var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithPopup(provider).then( (result)=> {
-          this.user = result.user
+          this._setUserInfo(result.user)
         }).catch(function (error) {
           console.log(error)
+        });
+      }
+
+      _setUserInfo(user){
+        this.user = user;
+        firebase.database().ref('/users/' + user.uid).once('value').then((snapshot)=> {
+          var data = snapshot.val();
+          if(!data){
+            firebase.database().ref('users/' + user.uid).set({
+              photoURL:user.photoURL,
+              displayName:user.displayName,
+              email:user.email
+            });
+          }
         });
       }
 
@@ -133,7 +146,7 @@
         if (page === undefined) {
           return;
         }
-        this.page = page || 'view1';
+        this.page = page || 'main';
 
         // var myLayout = this.$.myLayout
         // if (!myLayout.$.drawer.persistent) {
