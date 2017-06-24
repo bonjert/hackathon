@@ -121,14 +121,20 @@
 
 
       fetchSpot() {
+
+
+
+
         this.usersRef = firebase.database().ref(`/users`)
         this.coordinatesRef = firebase.database().ref(`/coordinates`).orderByKey()
         this.coordinatesRef.on("child_added", (snapshot) => {
           const item = snapshot.val();
           item.key = snapshot.key;
-          //item.user = this.usersRef.child(item.uid)
-          
-          console.log(item)
+          this.usersRef.child(item.uid).once('value',snap=>{
+            item.user = snap.val()
+            item.user.key = snap.key
+            console.log(item)
+          })
         });
 
       }
