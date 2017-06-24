@@ -19,8 +19,26 @@
     storageBucket: "hackathon-46ef4.appspot.com",
     messagingSenderId: "177551575442"
   };
-  firebase.initializeApp(config);
+  firebase.initializeApp(config)
+
+  const messaging = firebase.messaging()
+  messaging.requestPermission()
+  .then(function(){
+    //console.log('Have Permission')
+    return messaging.getToken()
+  })
+  .then(function(token){
+    console.log(token)
+  })
+  .catch(function(err){
+    console.log('Error Permission')
+  })
+  
+  messaging.onMessage(function(payload){
+    console.log('msg :'+payload)
+  })
 </script>
+
 
 <dom-module id="my-app">
   <template>
