@@ -218,9 +218,9 @@
                     <div main-title>MY APPS</div>
                     <!--<a href="">Sign In</a>-->
                     <!--<button on-click="login">Sign In</button>-->
-                    <!--<template is="dom-if" if="[[checkUser(user)]]">
+                    <template is="dom-if" if="[[checkUser(user)]]">
                         <button on-click="openDialogLogin">Sign In</button>
-                    </template>-->
+                    </template>
 
                     <template is="dom-if" if="[[!checkUser(user)]]">
                         <img class="circle" src="[[user.photoURL]]" alt="Smiley face" height="42" width="42">
@@ -345,7 +345,7 @@
                     return Object.keys(val).length == 0;
                 }
                 else{
-                    return false
+                   this.$.dialogLogin.open();
                 }
               
             }
