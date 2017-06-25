@@ -67,22 +67,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _actionFight(e) {
         var userSelected = e.detail;
-        fetch('https://fcm.googleapis.com/fcm/send', {
-          method: 'POST',
-          headers: new Headers({
-            'Content-Type': 'application/json',
-            'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
-          }),
-          body: JSON.stringify({
-            to: item.$val,
-            notification: {
-              title: "Rps Game : " + userSelected.displayName +"have attacked",
-              body: userSelected.displayName +"have attacked",
-              click_action: this.noteName,
-              icon: '/images/rps/icon-72x72.png'
-            }
+
+        //console.log(userSelected);
+        var newPostKey = firebase.database().ref().child('history').push().key;
+        var newPostKey2 = firebase.database().ref().child('history').push().key;
+
+        var postData = {
+          uid: this.user.uid,
+          uid2: userSelected.$key,
+          ans: userSelected.answer,
+          type: 'attack',
+          status:'wait',
+          ref:newPostKey2
+        };
+        
+        var updates = {};
+        updates['/history/' + newPostKey] = postData;
+
+        firebase.database().ref().update(updates).then((res)=>{
+
+          var postData2 = {
+            uid: userSelected.$key,
+            uid2: this.user.uid,
+            type: 'defense',
+            status:'wait',
+            ref:newPostKey
+          };
+          var updates2 = {};
+          updates2['/history/' + newPostKey2] = postData2;
+          firebase.database().ref().update(updates2).then((res2)=>{
+            console.log('ok')
           })
-        }).then(function () { console.log('ok') });
+        })
+
+        // fetch('https://fcm.googleapis.com/fcm/send', {
+        //   method: 'POST',
+        //   headers: new Headers({
+        //     'Content-Type': 'application/json',
+        //     'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
+        //   }),
+        //   body: JSON.stringify({
+        //     to: userSelected.tokenFcm,
+        //     notification: {
+        //       title: "Rps Game : Some body have attacked",
+        //       click_action: this.noteName,
+        //       icon: this.user.userphotoURL
+        //     }
+        //   })
+        // }).then(function (result) { console.log('ok',result) });
       }
     }
 

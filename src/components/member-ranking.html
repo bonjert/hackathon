@@ -1,9 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<!--<link rel="import" href="../layout/shared-styles.html">-->
-
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
-
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../common-behavior.html">
+
+
 <dom-module id="member-ranking">
 
     <template>
@@ -63,7 +65,6 @@
                 <p>
                     คุณ NAME ต้องการจะสู้กับคุณ
                     กรุณาเลือก
-                    
                 </p>
                 <div class="buttons" style="border-top:1px solid #ddd">
                     <paper-button raised id="rock" on-tap="getHand" dialog-confirm>ค้อน</paper-button>
@@ -76,7 +77,7 @@
     </template>
 
     <script>
-        class memberRanking extends Polymer.Element {
+        class memberRanking extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element) {
 
             static get is() { return 'member-ranking'; }
 
@@ -104,11 +105,14 @@
                 return index + 1
             }
             fight(e) {
-                console.log(e.model);
+                this.userSelected = e.model.item;
                 this.$.modal.open()
             }
             getHand(e){
-                console.log(e.currentTarget.id);
+                var target = e.currentTarget;
+                this.fire('action-fight',Object.assign({},this.userSelected,{answer:target.id}))
+                //console.log(this.userSelected);
+                //console.log(target.id);
             }
 
         }
