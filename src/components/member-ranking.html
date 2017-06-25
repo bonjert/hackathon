@@ -56,7 +56,6 @@
 
         <div role="listbox">
 
-
             <template is="dom-repeat" items={{dataRanking}}>
                 <paper-icon-item>
                     <div class="ranking">
@@ -72,10 +71,15 @@
                             </template>
                         </div>
                         <div secondary>WIN [[item.win]] LOSE [[item.lose]] </div>
-                        <div secondary>(DIFF [[item.diff]]) </div>
+                        <div secondary>(DIFF [[item.diff]])  [[item.uid]]</div>
                     </paper-item-body>
                     <!--<div class="avatar blue">-->
-                    <paper-button raised style="margin: 10px;" class="fight" on-tap="fight">Attack !!!</paper-button>
+                    
+                    <template is="dom-if" if={{isDup(user.uid,item.$key)}}>
+                        <paper-button raised style="margin: 10px;" class="fight" on-tap="fight">Attack !!!</paper-button>
+                    </template>
+                    
+                    
                     <!--</div>-->
                 </paper-icon-item>
             </template>
@@ -112,7 +116,12 @@
                 return {
                     dataRanking: {
                         type: Array,
-                        value: []
+                        value: [],
+                        observer:'getData'
+                    },
+                    user:{
+                        type:Object,
+                        observer:'getData'
                     }
                 };
             }
@@ -120,7 +129,13 @@
             constructor() {
                 super();
             }
-
+            getData(e){
+                console.log(e);
+            }
+            isDup(uid,key){
+                if(uid === key)return false
+                return true
+            }
             ready() {
                 super.ready();
 
