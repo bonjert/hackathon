@@ -292,11 +292,10 @@
             <paper-toast id="toast">
                 <iron-icon icon="icons:face"></iron-icon><span style="margin-left:10px">[[toastMessage]]</span>
             </paper-toast>
-
-            <div class="container">
+        </app-header-layout>
+         <div class="container">
                 <slot></slot>
             </div>
-        </app-header-layout>
         <!--<template is="dom-if" if="[[checkUser(user)]]">-->
           <paper-dialog id="dialogLogin" style="z-index:3;" opened modal>
                 <h2>Please Login.</h2>
@@ -305,13 +304,7 @@
                         <button class="loginBtn loginBtn--facebook"  on-click="login">
                         Login with Facebook
                         </button>
-                    </div>
-                    <div style="text-align:center">
-                         <button class="loginBtn loginBtn--google">
-                        Login with Google
-                        </button>
-                    </div>
-                   
+                    </div>           
                 </p>
             </paper-dialog>
         <!--</template>-->
@@ -381,7 +374,7 @@
                 this.$.dialogLogin.open();
             }
             _changePage(val){
-                console.log(val)
+                // console.log(val)
                 this.changePath({path:val})
             }
 
