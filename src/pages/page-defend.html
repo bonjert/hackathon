@@ -59,6 +59,7 @@
       ready() {
         super.ready();
         this.addEventListener('action-fight', this._actionFight.bind(this))
+        this.addEventListener('action-defend', this._actionDefend.bind(this))
       }
 
       _actionFight(e) {
@@ -80,6 +81,49 @@
           })
         }).then(function () { console.log('ok') });
       }
+
+      _actionDefend(e){
+        var answer = e.detail.answer;
+        console.log(answer);
+        firebase.database().ref('/history/' + answer.key).once('value').then((snapshot)=>{
+          var dataDefend = snapshot.val();
+          firebase.database().ref('/history/' + answer.ref).once('value').then((snapshot)=>{
+            dataDefend.ans = answer.answer
+            dataDefend.status = 'done'
+            var dataAttack = snapshot.val()
+            dataAttack.status = 'done'
+            
+            if(dataDefend.ans==dataAttack.ans){
+              dataDefend.res = 'due';
+              dataAttack.res = 'due';
+            }else if(dataDefend.ans=="rock" && dataAttack.ans=="scissors"){
+              dataDefend.res = 'win';
+              dataAttack.res = 'lose';
+            }else if(dataDefend.ans=="rock" && dataAttack.ans=="paper"){
+              dataDefend.res = 'lose';
+              dataAttack.res = 'win';
+            }else if(dataDefend.ans=="paper" && dataAttack.ans=="scissors"){
+              dataDefend.res = 'lose';
+              dataAttack.res = 'win';
+            }else if(dataDefend.ans=="paper" && dataAttack.ans=="rock"){
+              dataDefend.res = 'win';
+              dataAttack.res = 'lose';
+            }else if(dataDefend.ans=="scissors" && dataAttack.ans=="rock"){
+              dataDefend.res = 'lose';
+              dataAttack.res = 'win';
+            }else if(dataDefend.ans=="scissors" && dataAttack.ans=="paper"){
+              dataDefend.res = 'win';
+              dataAttack.res = 'lose';
+            }else{}
+
+            firebase.database().ref('history/' +  answer.key).set(dataDefend);
+            firebase.database().ref('history/' +  answer.ref).set(dataAttack);
+
+          })
+          
+        });
+      }
+      
     }
 
     window.customElements.define(PageDefend.is, PageDefend);
