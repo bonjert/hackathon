@@ -1,0 +1,81 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./../components/member-defend.html">
+<dom-module id="page-defend">
+  <template>
+    <style>
+       :host {
+        display: block;
+
+        padding: 10px 20px;
+      }
+
+    </style>
+    <member-defend data-defend$="{{data}}"></member-defend>
+  </template>
+
+  <script>
+    class PageDefend extends Polymer.Element {
+      static get is() { return 'page-defend'; }
+      static get properties() {
+        return {
+          // This shouldn't be neccessary, but the Analyzer isn't picking up
+          // Polymer.Element#rootPath
+          rootPath: String,
+          data: {
+            type: Array,
+            observer: 'getData',
+            value: [
+              {
+                id: 1,
+                user: 'tonkung',
+                img: '11111.img',
+                win: 15,
+                lose: 0,
+              }
+            ]
+          }
+        };
+      }
+      getData(e) {
+        console.log(e);
+      }
+
+      ready() {
+        super.ready();
+        this.addEventListener('action-fight', this._actionFight.bind(this))
+      }
+
+      _actionFight(e) {
+        var userSelected = e.detail;
+        fetch('https://fcm.googleapis.com/fcm/send', {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
+          }),
+          body: JSON.stringify({
+            to: item.$val,
+            notification: {
+              title: "Rps Game : " + userSelected.displayName +"have attacked",
+              body: userSelected.displayName +"have attacked",
+              click_action: this.noteName,
+              icon: '/images/rps/icon-72x72.png'
+            }
+          })
+        }).then(function () { console.log('ok') });
+      }
+    }
+
+    window.customElements.define(PageDefend.is, PageDefend);
+  </script>
+</dom-module>

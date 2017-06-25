@@ -12,6 +12,7 @@
 <link rel="import" href="layout/my-layout.html">
 <link rel="lazy-import" href="pages/page-tournament.html">
 <link rel="lazy-import" href="pages/page-ranking.html">
+<link rel="lazy-import" href="pages/page-defend.html">
 <link rel="lazy-import" href="pages/page-view404.html">
 <!--<link rel="lazy-import" href="pages/page-profile.html">-->
 
@@ -47,6 +48,7 @@
       <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
         <page-ranking name="ranking" user="[[user]]" data="{{dataRanking}}"></page-ranking>
         <page-tournament name="tournament" user="[[user]]" data="{{dataRanking}}"></page-tournament>
+        <page-defend name="defend" user="[[user]]"></page-defend>
         <page-view404 name="view404"></page-view404>
       </iron-pages>
     </my-layout>
