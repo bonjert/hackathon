@@ -38,11 +38,24 @@
                 color: white;
             }
 
-            paper-button#rock {}
-
-            paper-button#scissors {}
-
-            paper-button#paper {}
+            .tag-lose{
+                padding:10px;
+                background-color:#d9534f;
+                color:white;
+                border-radius: 10px;
+            }
+            .tag-win{
+                padding:10px;
+                background-color:#5cb85c;
+                color:white;
+                border-radius: 10px;
+            }
+            .tag-due{
+                padding:10px;
+                background-color:#ddd;
+                color:white;
+                border-radius: 10px;
+            }
         </style>
 
         <div role="listbox">
@@ -60,7 +73,7 @@
                             <div>
                                 [[item.displayName]] attacked to [[item.displayName2]]!!!
                             </div>
-                            <div secondary>(Status [[item.res]]) </div>
+                            <div class$="{{checkRes(item.res)}}" secondary>(Status [[item.res]]) </div>
                         </paper-item-body>
                         
                     </template>
@@ -72,7 +85,7 @@
                             <div>
                                 [[item.displayName2]] attacked to [[item.displayName]]!!!
                             </div>
-                            <div secondary>(Status [[item.res]]) </div>
+                            <div class$="{{checkRes(item.res)}}" secondary>(Status [[item.res]]) </div>
                         </paper-item-body>
                     </template>
                     <!--<div class="avatar blue">-->
@@ -141,6 +154,20 @@
                 } finally {
                     
                 }
+            }
+            checkRes(res){
+                console.log(res);
+                switch (res) {
+                    case 'win':
+                            return 'tag-win'
+                    case 'lose':
+                            return 'tag-lose'
+                    default:
+                        return 'tag-due'
+                }
+//                 tag-lost
+// tag-win
+// tag-due
             }
             ready() {
                 super.ready();
