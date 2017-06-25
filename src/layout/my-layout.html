@@ -208,9 +208,9 @@
         </style>
 
 
-        <app-header-layout>
-            <app-header style="z-index:1;" fixed condenses effects="waterfall">
-                <paper-progress class="red" indeterminate></paper-progress>
+        <app-header-layout style="z-index:1;">
+            <app-header fixed condenses effects="waterfall">
+                <!--<paper-progress class="red" indeterminate></paper-progress>-->
                 <app-toolbar>
 
                     <!--<paper-icon-button icon=""></paper-icon-button>-->
@@ -265,15 +265,13 @@
 
             <!--<sample-content size="10"></sample-content>-->
 
-            <paper-toast id="toast">
-                <iron-icon icon="icons:face"></iron-icon><span style="margin-left:10px">[[toastMessage]]</span>
-            </paper-toast>
+          
         </app-header-layout>
          <div class="container">
                 <slot></slot>
         </div>
         <!--<template is="dom-if" if="[[checkUser(user)]]">-->
-          <paper-dialog id="dialogLogin" style="z-index:3;" opened modal>
+          <paper-dialog id="dialogLogin" style="z-index:3;" modal>
                 <h2>Please Login.</h2>
                 <p>
                     <div style="text-align:center">
@@ -283,15 +281,20 @@
                     </div>           
                 </p>
             </paper-dialog>
+        <!--</template>-->
+            
                <paper-dialog id="alignedDialog" no-overlap horizontal-align="right" vertical-align="top">
-                <h2>[[user.displayName]]</h2>
-                <p>
-                    [[user.email]]
-                </p>
-                <div class="buttons">
-                    <paper-button on-tap="logout">Sign Out</paper-button>
-                </div>
-            </paper-dialog>
+                    <h2>[[user.displayName]]</h2>
+                    <p>
+                        [[user.email]]
+                    </p>
+                    <div class="buttons">
+                        <paper-button on-tap="logout">Sign Out</paper-button>
+                    </div>
+                </paper-dialog>
+              <paper-toast id="toast">
+                <iron-icon icon="icons:face"></iron-icon><span style="margin-left:10px">[[toastMessage]]</span>
+            </paper-toast>
         <!--</template>-->
     </template>
 
@@ -327,6 +330,7 @@
                 if(val != null){
                     if(Object.keys(val).length != 0) this.$.dialogLogin.close();
                     return Object.keys(val).length == 0;
+                        
                 }
                 else{
                    this.$.dialogLogin.open();
