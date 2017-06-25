@@ -14,11 +14,7 @@
 <link rel="lazy-import" href="pages/page-ranking.html">
 <link rel="lazy-import" href="pages/page-defend.html">
 <link rel="lazy-import" href="pages/page-view404.html">
-<!--<link rel="lazy-import" href="pages/page-profile.html">-->
 
-
-
-<script src="./../bower_components/firebase/firebase.js"></script>
 
 <dom-module id="my-app">
   <template>
@@ -165,8 +161,9 @@
 
       _actionSigout(){
         this.$.auth.signOut()
-        .then(function(result) {
+        .then((result)=>{
           console.log(result)
+          this.user=null;
         })
         .catch(function(error) {
           console.log('error')
@@ -213,12 +210,14 @@
       }
 
       _pageChanged(page) {
+        if(page!="__"){
         var resolvedPageUrl = this.resolveUrl('pages/page-' + page + '.html');
         Polymer.importHref(
           resolvedPageUrl,
           null,
           this._showPage404.bind(this),
           true);
+        }
       }
 
       _showPage404() {

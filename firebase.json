@@ -3,11 +3,15 @@
         "public": "./build/default",
         "rewrites": [
             {
-                "source": "!/__/**",
+                "source": "/",
                 "destination": "/index.html"
             },
             {
-                "source": "**/!(*.js|*.html|*.css|*.json|*.svg|*.png|*.jpg|*.jpeg)",
+                "source": "/ranking",
+                "destination": "/index.html"
+            },
+            {
+                "source": "/defend",
                 "destination": "/index.html"
             }
         ]

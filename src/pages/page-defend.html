@@ -13,7 +13,7 @@
 
     </style>
 
-    <firebase-query
+    <firebase-query disabled="[[disFirebase]]"
         id="query"
         path="/history"
         data="{{data}}"
@@ -42,12 +42,17 @@
           },
           user:{
             observer:'userChanged'
+          },
+          disFirebase:{
+            type:Boolean,
+            value:true
           }
         };
       }
 
       userChanged(user){
         if(user){
+          this.disFirebase = false;
           this.equal = {uid:user.uid}
         }
       }

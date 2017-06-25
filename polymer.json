@@ -2,10 +2,8 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
-    "src/pages/page-view1.html",
-    "src/pages/page-view2.html",
-    "src/pages/page-view3.html",
-    "src/pages/page-view404.html"
+    "src/pages/page-defend.html",
+    "src/pages/page-ranking.html"
   ],
   "sources": [
     "src/**/*",
@@ -14,18 +12,19 @@
   ],
   "extraDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/*.js"
+    "bower_components/webcomponentsjs/*.js",
+    "firebase-messaging-sw.js"
   ],
   "lint": {
     "rules": ["polymer-2"]
   },
   "builds":[{
-    "bundle": false,
+    "bundle": true,
     "js": {"minify": false},
-    "css": {"minify": false},
-    "html": {"minify": false},
+    "css": {"minify": true},
+    "html": {"minify": true},
     "addServiceWorker": true,
     "addPushManifest": true,
-    "insertPrefetchLinks": false
+    "insertPrefetchLinks": true
   }]
 }
