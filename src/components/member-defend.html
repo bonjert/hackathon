@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="./../common-behavior.html">
+
 <dom-module id="member-defend">
 
     <template>
@@ -35,15 +37,12 @@
                 background-color: green;
                 color: white;
             }
-            paper-button#rock {
 
-            }
-            paper-button#scissors {
+            paper-button#rock {}
 
-            }
-            paper-button#paper {
+            paper-button#scissors {}
 
-            }
+            paper-button#paper {}
         </style>
 
         <div role="listbox">
@@ -54,35 +53,39 @@
                         [[getIndex(index)]]
                     </div>
                     <div class="avatar blue" slot="item-icon">
-                        <img src="[[item.photoURL]]" class="circle" alt="[[item.displayName]]">
+                        <img src="[[item.photoURL]]" class="circle" alt="[[item.uid]]">
                     </div>
                     <paper-item-body two-line>
-                        <div>[[item.displayName]]</div>
-                        <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>
+                        <div>[[item.uid]] || [[item.type]]</div>
+                        <!--<div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>-->
                     </paper-item-body>
                     <!--<div class="avatar blue">-->
-                    <paper-button raised style="margin: 10px;" class="fight" on-tap="fight">Attack !!!</paper-button>
+
+                    <template is="dom-if" if={{checkType(item.status,item.type)}}>
+                        <paper-button raised style="margin: 10px;" class="fight" item="{{item}}" on-tap="fight">Defend !!!</paper-button>
+                    </template>
+
                     <!--</div>-->
                 </paper-icon-item>
             </template>
 
-            <paper-dialog id="modal" style="z-index:4;" >
-                <h2>Attack !! </h2>
+            <paper-dialog id="modal" style="z-index:4;">
+                <h2>Defend !! </h2>
                 <p>
-                   <div>
-                       Please Select Choice Below for Attack!!!  
-                   </div> 
-                   <div>
-                       Rock, Scissors, and Paper 
-                   </div>
+                    <div>
+                        Please Select Choice Below for Defend!!!
+                    </div>
+                    <div>
+                        Rock, Scissors, and Paper
+                    </div>
                 </p>
                 <div class="buttons" style="border-top:1px solid #ddd">
                     <paper-button raised id="rock" on-tap="getHand" dialog-confirm>
-                     <img src="./images/rps/Hand-Rock.png" /></paper-button>
+                        <img src="./images/rps/Hand-Rock.png" /></paper-button>
                     <paper-button raised id="scissors" on-tap="getHand" dialog-confirm>
-                     <img src="./images/rps/Hand-Peace.png" /></paper-button>
+                        <img src="./images/rps/Hand-Peace.png" /></paper-button>
                     <paper-button raised id="paper" on-tap="getHand" dialog-confirm>
-                     <img src="./images/rps/Hand.png" /></paper-button>
+                        <img src="./images/rps/Hand.png" /></paper-button>
                 </div>
             </paper-dialog>
         </div>
@@ -90,7 +93,7 @@
     </template>
 
     <script>
-        class memberDefend extends Polymer.Element {
+        class memberDefend extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element){
 
             static get is() { return 'member-defend'; }
 
@@ -98,7 +101,12 @@
                 return {
                     dataDefend: {
                         type: Array,
-                        value: []
+                        value: [],
+                        observer: 'get'
+                    },
+                    dataUse :{
+                        type: Object,
+                        value:{}
                     }
                 };
             }
@@ -114,15 +122,31 @@
 
                 });
             }
+            checkType(status,attatk) {
+                if (status === 'wait' && attatk !== 'attack')//return false
+                     return true
+            }
+            get(lo) {
+                console.log(lo);
+            }
             getIndex(index) {
                 return index + 1
             }
             fight(e) {
-                console.log(e.model);
+                // console.log(e.currentTarget.item);
+                this.set('dataUse',e.currentTarget.item)
                 this.$.modal.open()
             }
-            getHand(e){
-                console.log(e.currentTarget.id);
+            getHand(e) {
+                // console.log(e.currentTarget.id);
+                var target = e.currentTarget;
+                let data =  {
+                    key:  this.dataUse.$key,
+                    ref:  this.dataUse.ref,
+                    answer: target.id
+                }
+                // console.log(data);
+                this.fire('action-defend',Object.assign({},this.userSelected,{answer:data}))
             }
 
         }
