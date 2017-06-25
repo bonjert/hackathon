@@ -156,7 +156,7 @@
                 }
             }
             checkRes(res){
-                console.log(res);
+                // console.log(res);
                 switch (res) {
                     case 'win':
                             return 'tag-win'
@@ -165,9 +165,6 @@
                     default:
                         return 'tag-due'
                 }
-//                 tag-lost
-// tag-win
-// tag-due
             }
             ready() {
                 super.ready();
@@ -181,13 +178,13 @@
                     return true
             }
             isAttatk(type) {
-                console.log(type);
-                console.log(type === 'attack');
+                // console.log(type);
+                // console.log(type === 'attack');
                 if (type === 'attack')
                     return true
             }
             get(lo) {
-                console.log(lo);
+                // console.log(lo);
             }
             getIndex(index) {
                 return index + 1
