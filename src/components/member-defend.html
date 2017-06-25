@@ -48,8 +48,7 @@
 
         <div role="listbox">
 
-dddd
-            <template is="dom-repeat" items={{dataRanking}}>
+            <template is="dom-repeat" items={{dataDefend}}>
                 <paper-icon-item>
                     <div class="ranking">
                         [[getIndex(index)]]
@@ -97,7 +96,7 @@ dddd
 
             static get properties() {
                 return {
-                    dataRanking: {
+                    dataDefend: {
                         type: Array,
                         value: []
                     }
