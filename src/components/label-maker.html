@@ -1,64 +1,40 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="./../../bower_components/google-map/google-map-marker.html">
 <dom-module id="label-maker">
 
     <template>
-            [[item]]//[[this.test]]
-            <span style="display: block; text-align: center;">[[item.displayName]]</span>
-                <span style="display: block; text-align: center;">  <img src="[[item.photoURL]]" style="height: 64px;
-                        text-align: center;
-                        width: 64px;
-                        margin-top: 10px;
-                        line-height: 64px;
-                        display: block;
-                        text-align: center;
-                        color: #555;
-                        border-radius: 50%;
-                        background: #ddd;
-                        float:left" 
-                        alt="[[item.displayName]]">
-                </span>
+            
 
-                <paper-button raised style="margin: 10px;" on-tap="fight">FIGHT !!!</paper-button>
-                <br>
+                <paper-button id="buttonF" raised style="margin: 10px;" on-click="fight">FIGHT !!!</paper-button>
+     
 
     </template>
 
     <script>
-        class labelMaker extends Polymer.Element {
+        class LabelMaker extends Polymer.Element {
 
             static get is() { return 'label-maker'; }
 
             static get properties() {
                 return {
                     item: {
-                        type: Array,
-                        observer:'get'
-                    },
-                    test:{
-                        type:String,
-                        value:'dsafasdf'
+                        type:Object,
+                        observer:'tt'
                     }
                 };
             }
 
-            constructor() {
-                super();
+            fight(e){
+                console.log(e.target)
+                
             }
-
-            ready() {
-                super.ready();
-
-                Polymer.RenderStatus.afterNextRender(this, function () {
-
-                });
-            }
-            get(index) {
-               console.log(index);
+            tt(data){
+                this.testza = data;
+                this.$.buttonF.setAttribute('tokenFcm',data.tokenFcm);
+                console.log(this.$.buttonF);
             }
 
         }
 
-        window.customElements.define(labelMaker.is, labelMaker);
+        window.customElements.define(LabelMaker.is, LabelMaker);
     </script>
 </dom-module>

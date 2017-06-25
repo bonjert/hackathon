@@ -3,6 +3,10 @@
 <link rel="import" href="./../../bower_components/google-map/google-map.html">
 <link rel="import" href="./../../bower_components/google-map/google-map-search.html">
 <link rel="import" href="./../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="./../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./../components/label-maker.html">
+
 <dom-module id="page-tournament">
     <template>
         <style>
@@ -34,10 +38,10 @@
             <button on-click="openDialog">click</button>
             <google-map-search map="[[map]]" query="Pizza" results="{{results}}">
             </google-map-search>
-            <google-map fit-to-marker api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999"
+            <google-map api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999"
                 zoom="17">
                 <template is="dom-repeat" items="{{data}}">
-                    <google-map-marker on-google-map-marker-click="check" latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
+                    <google-map-marker latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
                        <span style="display: block; text-align: center;">[[item.displayName]]</span>
                        <img src="[[item.photoURL]]" style="height: 64px;
                         text-align: center;
@@ -51,9 +55,8 @@
                         background: #ddd;
                          float:left" alt="[[item.displayName]]">
                
-                    
-                    <!--<paper-button raised style="margin: 10px;" on-click="fight">FIGHT !!!</paper-button>-->
-                    <BR>
+                         <!--<label-maker item="{{item}}"></label-maker>-->
+                    <br>
                     
                         <!--<div>[[item.displayName]]</div>
                         <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>-->
@@ -85,10 +88,15 @@
             }
             ready() {
                 super.ready()
+                
                 // this.addEventListener('google-map-marker-click', this.check.bind(this))
             }
-            check() {
+            check(e) {
+                console.log(e.target)
                 console.log('1234')
+            }
+            fight(e){
+                test
             }
             openDialog(){
                 console.log('1234')

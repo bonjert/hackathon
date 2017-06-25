@@ -18,7 +18,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         padding: 10px 20px;
       }
-      .circle{
+
+      .circle {
         height: 64px;
         width: 64px;
         line-height: 64px;
@@ -29,11 +30,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background: #ddd;
       }
     </style>
-    <!--<div>PageRanking</div>-->
     <member-ranking data-ranking$="{{data}}"></member-ranking>
-    <!--<div class="circle">
-      121212
-    </div>-->
   </template>
 
   <script>
@@ -46,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           rootPath: String,
           data: {
             type: Array,
-            observer:'getData',
+            observer: 'getData',
             value: [
               {
                 id: 1,
@@ -59,8 +56,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         };
       }
-      getData(e){
+      getData(e) {
         console.log(e);
+      }
+
+      ready() {
+        super.ready();
+        this.addEventListener('action-fight', this._actionFight.bind(this))
+      }
+
+      _actionFight(e) {
+        var userSelected = e.detail;
+        fetch('https://fcm.googleapis.com/fcm/send', {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
+          }),
+          body: JSON.stringify({
+            to: item.$val,
+            notification: {
+              title: "Rps Game : " + userSelected.displayName +"have attacked",
+              body: userSelected.displayName +"have attacked",
+              click_action: this.noteName,
+              icon: '/images/rps/icon-72x72.png'
+            }
+          })
+        }).then(function () { console.log('ok') });
       }
     }
 
