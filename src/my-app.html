@@ -102,7 +102,7 @@
       ready(){
         super.ready()
         this._connFirebase();
-        this._getGps();
+        //this._getGps();
 
         // this.addEventListener('change-path', this._changePage.bind(this))
         // this.addEventListener('action-login', this._actionLogin.bind(this))
@@ -124,27 +124,27 @@
         });
       }
 
-      _getGps(){
-        if (navigator.geolocation) {
-            // navigator.geolocation.getCurrentPosition((position)=>{
+      // _getGps(){
+      //   if (navigator.geolocation) {
+      //       // navigator.geolocation.getCurrentPosition((position)=>{
 
-            // });
-            navigator.geolocation.watchPosition((data)=>{
-              firebase.database().ref('/members/' + this.user.uid).once('value').then((snapshot)=>{
-                var user = Object.assign({},snapshot.val(),{
-                  latitude:data.coords.latitude,
-                  longitude:data.coords.longitude
-                })
-                firebase.database().ref('/members/'+this.user.uid).set(user)
-              });
-            }, ()=>{
+      //       // });
+      //       navigator.geolocation.watchPosition((data)=>{
+      //         firebase.database().ref('/members/' + this.user.uid).once('value').then((snapshot)=>{
+      //           var user = Object.assign({},snapshot.val(),{
+      //             latitude:data.coords.latitude,
+      //             longitude:data.coords.longitude
+      //           })
+      //           firebase.database().ref('/members/'+this.user.uid).set(user)
+      //         });
+      //       }, ()=>{
 
-            })
-        } else { 
-            //x.innerHTML = "Geolocation is not supported by this browser.";
-        }
+      //       })
+      //   } else { 
+      //       //x.innerHTML = "Geolocation is not supported by this browser.";
+      //   }
 
-      }
+      // }
 
       _actionLogin() {
         console.log('ddd')
