@@ -83,7 +83,6 @@
       }
 
       _actionDefend(e){
-        console.log('dsfasdfhasjdhfajksdhfjaskdhfjaksdhfjkasdhfjalskdfh')
         var answer = e.detail.answer;
         console.log(answer);
         firebase.database().ref('/history/' + answer.key).once('value').then((snapshot)=>{
