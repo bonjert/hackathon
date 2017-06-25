@@ -30,11 +30,14 @@
                 text-align: center;
                 color: #555;
                 border-radius: 50%;
-                background: #ddd; 
+                background: #ddd;
             }
+
             paper-button {
                 margin: 10px;
             }
+
+          
         </style>
         <div>
             <button on-click="openDialog">click</button>
@@ -43,37 +46,44 @@
             <google-map api-key="AIzaSyD3E1D9b-Z7ekrT3tbhl_dy8DCXuIuDDRc" latitude="13.819226899999999" longitude="100.51235609999999"
                 zoom="17">
                 <template is="dom-repeat" items="{{data}}">
-                    <google-map-marker latitude="{{item.latitude}}" longitude="{{item.longitude}}" animation="DROP">
-                       <span style="display: block; text-align: center;">[[item.displayName]]</span>
-                       <img src="[[item.photoURL]]" style="height: 64px;
-                        text-align: center;
-                        width: 64px;
-                        margin-top: 10px;
-                        line-height: 64px;
-                        display: block;
-                        text-align: center;
-                        color: #555;
-                        border-radius: 50%;
-                        background: #ddd;
-                         float:left" alt="[[item.displayName]]">
-               
-                         <!--<label-maker item="{{item}}"></label-maker>-->
-                    <br>
-                    
+                    <google-map-marker id="mapMarker" latitude="{{item.latitude}}" icon="{{icon.imageURL}}" longitude="{{item.longitude}}" animation="DROP">
+                        <!--<div class="card">-->
+                            <!--<div class="center">-->
+                                <img class="imageProfile" src="[[item.photoURL]]" alt="Avatar" style="  height: 64px;
+                                text-align: center;
+                                width: 64px;
+                                line-height: 64px;
+                                color: #555;
+                                padding-top:10px;
+                                ">
+                            <!--</div>-->
+                          
+                            <!--<div class="container">-->
+                                <h4><b>[[item.displayName]]</b></h4>
+                                <p> 
+                                    win : <span>[[item.win]]</span> <br>
+                                    lose : <span>[[item.lose]]</span>
+                                </p>
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--<label-maker item="{{item}}"></label-maker>-->
+                        <!--<br>-->
+
                         <!--<div>[[item.displayName]]</div>
                         <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>-->
                     </google-map-marker>
                 </template>
             </google-map>
             <paper-dialog id="modal">
-                 <h2>ALERT MESSAGE !! </h2>
+                <h2>ALERT MESSAGE !! </h2>
                 <p>
                     คุณ NAME ต้องการจะสู้กับคุณ
                 </p>
-            <div class="buttons" style="border-top:1px solid #ddd">
-                <paper-button dialog-confirm autofocus>YES</paper-button>
-                <paper-button dialog-confirm autofocus>NO</paper-button>
-            </div>
+                <div class="buttons" style="border-top:1px solid #ddd">
+                    <paper-button dialog-confirm autofocus>YES</paper-button>
+                    <paper-button dialog-confirm autofocus>NO</paper-button>
+                </div>
             </paper-dialog>
         </div>
     </template>
@@ -83,6 +93,14 @@
             static get is() { return 'page-tournament'; }
             static get properties() {
                 return {
+                    icon: {
+                        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+                        fillColor: 'yellow',
+                        fillOpacity: 0.8,
+                        scale: 1,
+                        strokeColor: 'gold',
+                        strokeWeight: 14
+                    }
                     // // This shouldn't be neccessary, but the Analyzer isn't picking up
                     // // Polymer.Element#rootPath
                     // rootPath: String,
@@ -90,17 +108,17 @@
             }
             ready() {
                 super.ready()
-                
+                console.log(this.$.mapMarker)
                 // this.addEventListener('google-map-marker-click', this.check.bind(this))
             }
             check(e) {
                 console.log(e.target)
                 console.log('1234')
             }
-            fight(e){
+            fight(e) {
                 test
             }
-            openDialog(){
+            openDialog() {
                 console.log('1234')
                 this.$.modal.open()
 

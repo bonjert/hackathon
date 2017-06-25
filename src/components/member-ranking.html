@@ -46,6 +46,12 @@
             paper-button#paper {
 
             }
+            .tag{
+                padding:10px;
+                background-color:red;
+                color:white;
+                border-radius: 10px;
+            }
         </style>
 
         <div role="listbox">
@@ -60,7 +66,11 @@
                         <img src="[[item.photoURL]]" class="circle" alt="[[item.displayName]]">
                     </div>
                     <paper-item-body two-line>
-                        <div>[[item.displayName]]</div>
+                        <div>[[item.displayName]] 
+                            <template is="dom-if" if="{{hideMVP(index)}}">
+                                <span class="tag">[[checkIndex(index)]]</span>
+                            </template>
+                        </div>
                         <div secondary>WIN [[item.win]] LOSE [[item.lose]] </div>
                         <div secondary>(DIFF [[item.diff]]) </div>
                     </paper-item-body>
@@ -70,7 +80,7 @@
                 </paper-icon-item>
             </template>
 
-            <paper-dialog id="modal" style="z-index:4;" >
+            <paper-dialog id="modal" style="z-index:1;" modal>
                 <h2>Attack !! </h2>
                 <p>
                    <div>
@@ -117,6 +127,16 @@
                 Polymer.RenderStatus.afterNextRender(this, function () {
 
                 });
+            }
+            checkIndex(val){
+                if(val == 0){
+                    return 'MVP'
+                }
+            }
+            hideMVP(val){
+                  if(val == 0){
+                    return true
+                }
             }
             getIndex(index) {
                 return index + 1

@@ -246,31 +246,7 @@
                 </paper-tabs>
 
             </app-header>
-            <paper-dialog id="alignedDialog" no-overlap horizontal-align="right" vertical-align="top">
-                <!--<p>
-                    <div class="header">
-                        <span class="circle ">
-                            <img class="circle" src="[[user.photoURL]]" alt="Smiley face" height="36" width="36">
-                        </span>
-                        <span class="text-card">
-                            <div class="text-title">
-                                [[user.displayName]]
-                            </div>
-                            <div class="content">
-                                [[user.email]]
-                            </div>
-                        </span>
-                    </div>
-                </p>-->
-
-                <h2>[[user.displayName]]</h2>
-                <p>
-                    [[user.email]]
-                </p>
-                <div class="buttons">
-                    <paper-button on-tap="logout">Sign Out</paper-button>
-                </div>
-            </paper-dialog>
+         
             <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                 <a name="view1" href="view1">View One</a>
                 <a name="view2" href="view2">View Two</a>
@@ -292,11 +268,10 @@
             <paper-toast id="toast">
                 <iron-icon icon="icons:face"></iron-icon><span style="margin-left:10px">[[toastMessage]]</span>
             </paper-toast>
-
-            <div class="container">
-                <slot></slot>
-            </div>
         </app-header-layout>
+         <div class="container">
+                <slot></slot>
+        </div>
         <!--<template is="dom-if" if="[[checkUser(user)]]">-->
           <paper-dialog id="dialogLogin" style="z-index:3;" opened modal>
                 <h2>Please Login.</h2>
@@ -305,14 +280,17 @@
                         <button class="loginBtn loginBtn--facebook"  on-click="login">
                         Login with Facebook
                         </button>
-                    </div>
-                    <div style="text-align:center">
-                         <button class="loginBtn loginBtn--google">
-                        Login with Google
-                        </button>
-                    </div>
-                   
+                    </div>           
                 </p>
+            </paper-dialog>
+               <paper-dialog id="alignedDialog" no-overlap horizontal-align="right" vertical-align="top">
+                <h2>[[user.displayName]]</h2>
+                <p>
+                    [[user.email]]
+                </p>
+                <div class="buttons">
+                    <paper-button on-tap="logout">Sign Out</paper-button>
+                </div>
             </paper-dialog>
         <!--</template>-->
     </template>
@@ -381,7 +359,7 @@
                 this.$.dialogLogin.open();
             }
             _changePage(val){
-                console.log(val)
+                // console.log(val)
                 this.changePath({path:val})
             }
 
