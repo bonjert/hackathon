@@ -19,12 +19,12 @@
         id="query"
         path="/history"
         data="{{data}}"
-        equal-to="[[user.uid]]"
+        order-by-child="uid"
+        equal-to="{{user.uid}}"
     >
     </firebase-query>
-
     <template is="dom-repeat" items="{{data}}">
-      [[item]]
+      [[item.uid]]
     </template>
 
     <member-defend data-defend$="{{data}}"></member-defend>
@@ -43,10 +43,28 @@
           data: {
             type: Array,
             observer: 'getData',
-            value: []
+            value: [
+              {
+                id: 1,
+                user: 'tonkung',
+                img: '11111.img',
+                win: 15,
+                lose: 0,
+              }
+            ]
+          },
+          user:{
+            observer:'userChanged'
           }
         };
       }
+
+      userChanged(user){
+        if(user){
+          this.equal = {uid:user.uid}
+        }
+      }
+
       getData(e) {
         console.log(e);
       }
