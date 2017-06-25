@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
 
 <link rel="import" href="../../bower_components/paper-item/paper-item-body.html">
-<dom-module id="member-ranking">
+<dom-module id="member-defend">
 
     <template>
         <style>
@@ -48,7 +48,7 @@
 
         <div role="listbox">
 
-
+dddd
             <template is="dom-repeat" items={{dataRanking}}>
                 <paper-icon-item>
                     <div class="ranking">
@@ -59,8 +59,7 @@
                     </div>
                     <paper-item-body two-line>
                         <div>[[item.displayName]]</div>
-                        <div secondary>WIN [[item.win]] LOSE [[item.lose]] </div>
-                        <div secondary>(DIFF [[item.diff]]) </div>
+                        <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>
                     </paper-item-body>
                     <!--<div class="avatar blue">-->
                     <paper-button raised style="margin: 10px;" class="fight" on-tap="fight">Attack !!!</paper-button>
@@ -92,9 +91,9 @@
     </template>
 
     <script>
-        class memberRanking extends Polymer.Element {
+        class memberDefend extends Polymer.Element {
 
-            static get is() { return 'member-ranking'; }
+            static get is() { return 'member-defend'; }
 
             static get properties() {
                 return {
@@ -129,6 +128,6 @@
 
         }
 
-        window.customElements.define(memberRanking.is, memberRanking);
+        window.customElements.define(memberDefend.is, memberDefend);
     </script>
 </dom-module>
