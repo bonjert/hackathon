@@ -34,7 +34,7 @@
             }
 
             paper-button.fight {
-                background-color: green;
+                background-color: #4285f4;
                 color: white;
             }
 
@@ -52,13 +52,29 @@
                     <div class="ranking">
                         [[getIndex(index)]]
                     </div>
-                    <div class="avatar blue" slot="item-icon">
-                        <img src="[[item.photoURL]]" class="circle" alt="[[item.uid]]">
-                    </div>
-                    <paper-item-body two-line>
-                        <div>[[item.uid]] || [[item.type]]</div>
-                        <!--<div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>-->
-                    </paper-item-body>
+                    <template is="dom-if" if={{isAttatk(item.type)}}>
+                        <div class="avatar blue" slot="item-icon">
+                            <img src="[[item.photoURL2]]" class="circle" alt="[[item.displayName2]]">
+                        </div>
+                        <paper-item-body two-line>
+                            <div>
+                                [[item.displayName]] attacked to [[item.displayName2]]!!!
+                            </div>
+                            <div secondary>(Status [[item.res]]) </div>
+                        </paper-item-body>
+                        
+                    </template>
+                    <template is="dom-if" if={{!isAttatk(item.type)}}>
+                        <div class="avatar blue" slot="item-icon">
+                            <img src="[[item.photoURL2]]" class="circle" alt="[[item.displayName2]]">
+                        </div>
+                        <paper-item-body two-line>
+                            <div>
+                                [[item.displayName2]] attacked to [[item.displayName]]!!!
+                            </div>
+                            <div secondary>(Status [[item.res]]) </div>
+                        </paper-item-body>
+                    </template>
                     <!--<div class="avatar blue">-->
 
                     <template is="dom-if" if={{checkType(item.status,item.type)}}>
@@ -93,7 +109,7 @@
     </template>
 
     <script>
-        class memberDefend extends Polymer.mixinBehaviors([CommonBehavior],Polymer.Element){
+        class memberDefend extends Polymer.mixinBehaviors([CommonBehavior], Polymer.Element) {
 
             static get is() { return 'member-defend'; }
 
@@ -104,9 +120,9 @@
                         value: [],
                         observer: 'get'
                     },
-                    dataUse :{
+                    dataUse: {
                         type: Object,
-                        value:{}
+                        value: {}
                     }
                 };
             }
@@ -114,7 +130,18 @@
             constructor() {
                 super();
             }
-
+            idEmpty(EMPTY){
+                try {
+                   let len =  EMPTY.length
+                   if(len === 0 )
+                        return false
+                    return true
+                } catch (e) {
+                    
+                } finally {
+                    
+                }
+            }
             ready() {
                 super.ready();
 
@@ -122,9 +149,15 @@
 
                 });
             }
-            checkType(status,attatk) {
+            checkType(status, attatk) {
                 if (status === 'wait' && attatk !== 'attack')//return false
-                     return true
+                    return true
+            }
+            isAttatk(type) {
+                console.log(type);
+                console.log(type === 'attack');
+                if (type === 'attack')
+                    return true
             }
             get(lo) {
                 console.log(lo);
@@ -134,19 +167,19 @@
             }
             fight(e) {
                 // console.log(e.currentTarget.item);
-                this.set('dataUse',e.currentTarget.item)
+                this.set('dataUse', e.currentTarget.item)
                 this.$.modal.open()
             }
             getHand(e) {
                 // console.log(e.currentTarget.id);
                 var target = e.currentTarget;
-                let data =  {
-                    key:  this.dataUse.$key,
-                    ref:  this.dataUse.ref,
+                let data = {
+                    key: this.dataUse.$key,
+                    ref: this.dataUse.ref,
                     answer: target.id
                 }
                 // console.log(data);
-                this.fire('action-defend',Object.assign({},this.userSelected,{answer:data}))
+                this.fire('action-defend', Object.assign({}, this.userSelected, { answer: data }))
             }
 
         }
