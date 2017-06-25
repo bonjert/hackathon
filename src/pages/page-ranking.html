@@ -69,7 +69,11 @@
           ans: userSelected.answer,
           type: 'attack',
           status:'wait',
-          ref:newPostKey2
+          ref:newPostKey2,
+          photoURL:this.user.photoURL,
+          photoURL2:userSelected.photoURL,
+          displayName:this.user.displayName,
+          displayName2:userSelected.displayName
         };
         
         var updates = {};
@@ -82,7 +86,11 @@
             uid2: this.user.uid,
             type: 'defense',
             status:'wait',
-            ref:newPostKey
+            ref:newPostKey,
+            photoURL:userSelected.photoURL,
+            photoURL2:this.user.photoURL,
+            displayName:userSelected.displayName,
+            displayName2:this.user.displayName
           };
           var updates2 = {};
           updates2['/history/' + newPostKey2] = postData2;
@@ -91,21 +99,21 @@
           })
         })
 
-        // fetch('https://fcm.googleapis.com/fcm/send', {
-        //   method: 'POST',
-        //   headers: new Headers({
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
-        //   }),
-        //   body: JSON.stringify({
-        //     to: userSelected.tokenFcm,
-        //     notification: {
-        //       title: "Rps Game : Some body have attacked",
-        //       click_action: this.noteName,
-        //       icon: this.user.userphotoURL
-        //     }
-        //   })
-        // }).then(function (result) { console.log('ok',result) });
+        fetch('https://fcm.googleapis.com/fcm/send', {
+          method: 'POST',
+          headers: new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'key=AIzaSyDeEZqqXLcq3KARjtCkSPIkiXFye0AMGlE'
+          }),
+          body: JSON.stringify({
+            to: userSelected.tokenFcm,
+            notification: {
+              title: "Rps Game : Some body have attacked",
+              click_action: this.noteName,
+              icon: this.user.userphotoURL
+            }
+          })
+        }).then(function (result) { console.log('ok',result) });
       }
     }
 
