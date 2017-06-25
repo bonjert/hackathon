@@ -30,6 +30,11 @@
                 border-radius: 50%;
                 background: #ddd;
             }
+
+            paper-button.fight {
+                background-color: green;
+                color: white;
+            }
         </style>
 
         <div role="listbox">
@@ -47,8 +52,25 @@
                         <div>[[item.displayName]]</div>
                         <div secondary>WIN [[item.win]] LOSE [[item.lose]] (DIFF [[item.diff]]) </div>
                     </paper-item-body>
+                    <!--<div class="avatar blue">-->
+                    <paper-button raised style="margin: 10px;" class="fight" on-tap="fight">FIGHT !!!</paper-button>
+                    <!--</div>-->
                 </paper-icon-item>
             </template>
+
+            <paper-dialog id="modal">
+                <h2>FIGHT !! </h2>
+                <p>
+                    คุณ NAME ต้องการจะสู้กับคุณ
+                    กรุณาเลือก
+                    
+                </p>
+                <div class="buttons" style="border-top:1px solid #ddd">
+                    <paper-button raised id="rock" on-tap="getHand" dialog-confirm>ค้อน</paper-button>
+                    <paper-button raised id="scissors" on-tap="getHand" dialog-confirm>กรรไกร</paper-button>
+                    <paper-button raised id="paper" on-tap="getHand" dialog-confirm>กระดาษ</paper-button>
+                </div>
+            </paper-dialog>
         </div>
 
     </template>
@@ -80,6 +102,13 @@
             }
             getIndex(index) {
                 return index + 1
+            }
+            fight(e) {
+                console.log(e.model);
+                this.$.modal.open()
+            }
+            getHand(e){
+                console.log(e.currentTarget.id);
             }
 
         }
