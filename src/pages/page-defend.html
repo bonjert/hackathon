@@ -1,5 +1,3 @@
-
-
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="./../components/member-defend.html">
 <link rel="import" href="./../../bower_components/polymerfire/firebase-query.html">
@@ -23,9 +21,6 @@
         equal-to="{{user.uid}}"
     >
     </firebase-query>
-    <template is="dom-repeat" items="{{data}}">
-      [[item.uid]]
-    </template>
 
     <member-defend data-defend$="{{data}}"></member-defend>
 
