@@ -119,6 +119,27 @@
             firebase.database().ref('history/' +  answer.key).set(dataDefend);
             firebase.database().ref('history/' +  answer.ref).set(dataAttack);
 
+            var score = (select)=>{
+              firebase.database().ref('/members/' + select.uid).once('value').then((snapshot)=>{
+                var valueMember = snapshot.val();
+                if(select.res=="win"){
+                  valueMember.win = valueMember.win+1;
+                }else if(select.res=="lose"){
+                  valueMember.lost = valueMember.lost+1;
+                }else{
+                  valueMember.due = valueMember.due+1;
+                }
+                valueMember.diff = valueMember.lost-valueMember.win
+                firebase.database().ref('members/' +  select.uid).set(valueMember);
+              })
+            }
+
+            score(dataDefend);
+            
+           
+
+            
+
           })
           
         });
