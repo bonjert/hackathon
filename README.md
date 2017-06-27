@@ -11,3 +11,7 @@ PWA Online hackathon
 
 
 https://hackathon-46ef4.firebaseapp.com/
+
+หมายเหตุ
+>>>ในกรณีที่ login ไม่ได้ให้ทำการ Unregister service Workers แล้วลอง login อีก <<<
+ปล. เป็น bug #แก้ไม่ทันครับ 
